@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
-<!-- $Revision: 1.35 $ -->
+<!-- $Revision: 1.36 $ -->
 <package version="1.0">
  <name>HTTP</name>
  <summary>Miscellaneous HTTP utilities</summary>
@@ -13,7 +13,7 @@ language negotiation or HTTP redirection.
  <maintainers>
   <maintainer>
    <user>ssb</user>
-   <name>Stig Sæther Bakken</name>
+   <name>Stig Bakken</name>
    <email>stig@php.net</email>
    <role>lead</role> 
   </maintainer>
@@ -25,14 +25,12 @@ language negotiation or HTTP redirection.
   </maintainter>
  </maintainers>
  <release>
-  <version>1.3.4</version>
+  <version>1.3.5</version>
   <state>stable</state>
-  <date>2005-02-08</date>
+  <date>2005-02-28</date>
   <notes>
 <![CDATA[
-* stripping CR/LF characters from $url in HTTP::absoluteURI()
-* fixed bug #2851 (@'s trigger errorhandlers/debugger)
-* fixed bug #3378 (default proto is always https in absoluteURI() on IIS)
+* fixed package.xml for PEAR 1.4
 ]]>
   </notes>
   <filelist>
