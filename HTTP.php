@@ -229,7 +229,7 @@ class HTTP
         $url = HTTP::absoluteURI($url);
         header('Location: '. $url);
         
-        if ($rfc2616) {
+        if ($rfc2616 && @$_SERVER['REQUEST_METHOD'] != 'HEAD') {
             printf('Redirecting to: <a href="%s">%s</a>.', $url, $url);
         }
         if ($exit) {
