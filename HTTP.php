@@ -184,16 +184,19 @@ class HTTP
     {
         global $HTTP_SERVER_VARS;
         if (!preg_match('/^(https?|ftp):\/\//', $url)) {
-            $context = 'http' . (@$HTTP_SERVER_VARS['HTTPS'] == 'on' ? 's' : '') . '://' . $HTTP_SERVER_VARS['SERVER_NAME'];
+            $server = 'http' . (@$HTTP_SERVER_VARS['HTTPS'] == 'on' ? 's' : '') . '://' . $HTTP_SERVER_VARS['SERVER_NAME'];
             if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80 &&
                 $HTTP_SERVER_VARS['SERVER_PORT'] != 443) {
-                $context .= ':' . $HTTP_SERVER_VARS['SERVER_PORT'];
+                $server .= ':' . $HTTP_SERVER_VARS['SERVER_PORT'];
             }
+			
+			$path = dirname($HTTP_SERVER_VARS['PHP_SELF']);
             if ($url{0} != '/') {
-                $context .= dirname($HTTP_SERVER_VARS['PHP_SELF']);
-                $url = $context . '/' . preg_replace('!^\./!', '', $url);
+				$path   .= $url;
+                $server .= dirname($HTTP_SERVER_VARS['PHP_SELF']);
+                $url = $server . '/' . preg_replace('!^\./!', '', $url);
             } else {
-                $url = $context . $url;
+                $url = $server . $url;
             }
         }
 
@@ -201,5 +204,4 @@ class HTTP
         exit;
     }
 }
-
 ?>
