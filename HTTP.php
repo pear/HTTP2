@@ -207,8 +207,9 @@ class HTTP
     /**
      * Redirect
      * 
-     * This function redirects the client.  This is done by issuing
-     * a "Location" header and exiting if wanted.
+     * This function redirects the client. This is done by issuing
+     * a "Location" header and exiting if wanted.  If you set $rfc2616 to true
+     * HTTP will output a hypertext note with the location of the redirect.
      * 
      * @static 
      * @access  public 
@@ -216,15 +217,21 @@ class HTTP
      *                  have already been sent.
      * @param   string  $url URL where the redirect should go to.
      * @param   bool    $exit Whether to exit immediately after redirection.
+     * @param   bool    $rfc2616 Wheter to output a hypertext note where we're
+     *                  redirecting to (Redirecting to <a href="...">...</a>.)
      */
-    function redirect($url, $exit = true)
+    function redirect($url, $exit = true, $rfc2616 = false)
     {
         if (headers_sent()) {
             return false;
         }
         
-        header('Location: '. HTTP::absoluteURI($url));
+        $url = HTTP::absoluteURI($url);
+        header('Location: '. $url);
         
+        if ($rfc2616) {
+            printf('Redirecting to: <a href="%s">%s</a>.', $url, $url);
+        }
         if ($exit) {
             exit;
         }
