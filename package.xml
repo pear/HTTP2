@@ -12,7 +12,7 @@ HTTP-related stuff like date formatting or language negotiation.
   <license>PHP License</license>
   <maintainers>
     <maintainer>
-      <user>SSB</user>
+      <user>ssb</user>
       <name>Stig Sæther Bakken</name>
       <email>stig@php.net</email>
     </maintainer>
@@ -21,7 +21,7 @@ HTTP-related stuff like date formatting or language negotiation.
     <version>1.2</version>
     <state>stable</state>
     <date>2002-04-08</date>
-    <notes>New method: redirect</notes>
+    <notes>New methods: head and redirect</notes>
     <filelist>
       <dir name="/">
 	<file role="php">HTTP.php</file>
