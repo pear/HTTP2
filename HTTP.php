@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
+// | Copyright (c) 1997-2004 The PHP Group                                |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 2.02 of the PHP license,      |
 // | that is bundled with this package in the file LICENSE, and is        |
@@ -14,106 +14,124 @@
 // | license@php.net so we can mail you a copy immediately.               |
 // +----------------------------------------------------------------------+
 // | Authors: Stig Bakken <ssb@fast.no>                                   |
-// |                                                                      |
+// |          Sterling Hughes <sterling@php.net>                          |
+// |          Tomas V.V.Cox <cox@idecnet.com>                             |
+// |          Richard Heyes <richard@php.net>                             |
+// |          Philippe Jausions <Philippe.Jausions@11abacus.com>          |
+// |          Michael Wallner <mike@php.net>                              |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 //
-// HTTP utility functions.
-//
 
+/**
+* HTTP
+* 
+* HTTP utility functions
+* 
+* @package      HTTP
+* @category     HTTP
+* @version      $Revision$
+* @access       public
+*/
 class HTTP
 {
     /**
-     * Format a RFC compliant HTTP header.  This function
-     * honors the "y2k_compliance" php.ini directive.
-     *
-     * @param int $time UNIX timestamp
-     *
-     * @return mixed HTTP date string, or false for an invalid timestamp.
-     *
-     * @author Stig Bakken <ssb@fast.no>
-     * @author Sterling Hughes <sterling@php.net>
-     */
-    function Date($time)
+    * Date
+    * 
+    * Format a RFC compliant GMT date HTTP header.  This function honors the 
+    * "y2k_compliance" php.ini directive and formats the GMT date corresponding 
+    * to either RFC850 or RFC822.
+    * 
+    * @static
+    * @access   public
+    * @return   mixed   GMT date string, or false for an invalid $time parameter
+    * @param    mixed   $time unix timestamp or date (default = current time)
+    */
+    function Date($time = null)
     {
-        /* If we're y2k compliant, use the newer, reccomended RFC 822
-           format */
-        if (ini_get("y2k_compliance") == true) {
-            return gmdate("D, d M Y H:i:s \G\M\T", $time);
+        if (!isset($time)) {
+            $time = time();
+        } elseif (!is_numeric($time) && (-1 === $time = strtotime($time))) {
+            return false;
         }
-        /* Use RFC-850 which supports two character year numbers */
-        else {
-            return gmdate("F, d-D-y H:i:s \G\M\T", $time);
-        }
+        
+        // RFC822 or RFC850
+        $format = ini_get('y2k_compliance') ? 'D, d M Y' : 'F, d-D-y';
+        
+        return gmdate($format .' H:i:s \G\M\T', $time);
     }
 
     /**
-     * Negotiate language with the user's browser through the
-     * Accept-Language HTTP header or the user's host address.
-     * Language codes are generally in the form "ll" for a language
-     * spoken in only one country, or "ll-CC" for a language spoken in
-     * a particular country.  For example, U.S. English is "en-US",
-     * while British English is "en-UK".  Portugese as spoken in
-     * Portugal is "pt-PT", while Brazilian Portugese is "pt-BR".
-     * Two-letter country codes can be found in the ISO 3166 standard.
-     *
-     * Quantities in the Accept-Language: header are supported, for
-     * example:
-     *
-     *  Accept-Language: en-UK;q=0.7, en-US;q=0.6, no;q=1.0, dk;q=0.8
-     *
-     * @param array $supported an associative array indexed by language
-     * codes (country codes) supported by the application.  Values
-     * must evaluate to true.
-     *
-     * @param string $default the default language to use if none is found
-     * during negotiation, defaults to "en-US" for U.S. English
-     *
-     * @return string the negotiated language result
-     *
-     * @author Stig Bakken <ssb@fast.no>
-     */
-    function negotiateLanguage(&$supported, $default = 'en-US')
+    * Negotiate Language
+    * 
+    * Negotiate language with the user's browser through the Accept-Language 
+    * HTTP header or the user's host address.  Language codes are generally in 
+    * the form "ll" for a language spoken in only one country, or "ll-CC" for a 
+    * language spoken in a particular country.  For example, U.S. English is 
+    * "en-US", while British English is "en-UK".  Portugese as spoken in
+    * Portugal is "pt-PT", while Brazilian Portugese is "pt-BR".
+    * 
+    * Quality factors in the Accept-Language: header are supported, for example:
+    * Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
+    *
+    * <code>
+    *   require_once 'HTTP.php';
+    *   $langs = array(
+    *       'en'   => 'locales/en',
+    *       'en-US'=> 'locales/en',
+    *       'en-UK'=> 'locales/en',
+    *       'de'   => 'locales/de',
+    *       'de-DE'=> 'locales/de',
+    *       'de-AT'=> 'locales/de',
+    *   );
+    *   $neg = HTTP::negotiateLanguage($langs);
+    *   $dir = $langs[$neg];
+    * </code>
+    * 
+    * @static
+    * @access   public
+    * @return   string  The negotiated language result or the supplied default.
+    * @param    array   $supported An associative array of supported languages,
+    *                   whose values must evaluate to true.
+    * @param    string  $default The default language to use if none is found.
+    */
+    function negotiateLanguage($supported, $default = 'en-US')
     {
-        $supported = array_change_key_case($supported, CASE_LOWER);
-
-        /* If the client has sent an Accept-Language: header, see if
-         * it contains a language we support.
-         */
-        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $accepted = split(',[[:space:]]*', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-            for ($i = 0; $i < count($accepted); $i++) {
-                if (eregi('^([a-z_-]+);[[:space:]]*q=([0-9\.]+)', $accepted[$i], $arr)) {
-                    $q = (double)$arr[2];
-                    $l = $arr[1];
-                } else {
-                    $q = 42;
-                    $l = strtolower($accepted[$i]);
-                }
-
-                if (!empty($supported[$l]) && ($q > 0.0)) {
-                    if ($q == 42) {
-                        return $l;
-                    }
-                    $candidates[$l] = $q;
-                }
+        $supp = array();
+        foreach ($supported as $lang => $isSupported) {
+            if ($isSupported) {
+                $supp[strToLower($lang)] = $lang;
             }
-            if (isset($candidates)) {
-                arsort($candidates);
-                reset($candidates);
-                return key($candidates);
+        }
+        
+        if (!count($supp)) {
+            return $default;
+        }
+        
+        $matches = array();
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
+                $l = array_map('trim', array_map('strtolower', explode(';', trim($lang))));
+                if (isset($supp[$l[0]])) {
+                    if (isset($l[1])) {
+                        $matches[$l[0]] = (float) str_replace('q=', '', $l[1]);
+                    } else {
+                        $matches[$l[0]] = 1000 - count($matches);
+                    }
+                }
             }
         }
 
-        /* Check for a valid language code in the top-level domain of
-         * the client's host address.
-         */
-        if (isset($_SERVER['REMOTE_HOST']) &&
-            ereg("\.[^\.]+$", $_SERVER['REMOTE_HOST'], $arr)) {
-            $lang = strtolower($arr[1]);
-            if (!empty($supported[$lang])) {
-                return $lang;
+        if (count($matches)) {
+            asort($matches, SORT_NUMERIC);
+            return $supp[array_pop(array_keys($matches))];
+        }
+        
+        if (isset($_SERVER['REMOTE_HOST'])) {
+            $lang = strtolower(array_pop(explode('.', $_SERVER['REMOTE_HOST'])));
+            if (isset($supp[$lang])) {
+                return $supp[$lang];
             }
         }
 
@@ -121,8 +139,11 @@ class HTTP
     }
 
     /**
+    * Head
+    * 
     * Sends a "HEAD" HTTP command to a server and returns the headers
     * as an associative array. Example output could be:
+    * <code>
     *    Array
     *    (
     *        [response_code] => 200          // The HTTP response code
@@ -133,26 +154,38 @@ class HTTP
     *        [Connection] => close
     *        [Content-Type] => text/html
     *    )
+    * </code>
+    * 
+    * @see HTTP_Client::head()
+    * @see HTTP_Request
     *
-    * @param string $url A valid url, for ex: http://pear.php.net/credits.php
-    * @return mixed Assoc array or PEAR error
-    *
-    * @author Tomas V.V.Cox <cox@idecnet.com>
+    * @static
+    * @access   public
+    * @return   mixed   Returns associative array of response headers on success
+    *                   or PEAR error on failure.
+    * @param    string  $url A valid URL, e.g.: http://pear.php.net/credits.php
+    * @param    integer $timeout Timeout in seconds (default = 10)
     */
-    function head($url)
+    function head($url, $timeout = 10)
     {
-        $purl = parse_url($url);
-        $port = (isset($purl['port'])) ? $purl['port'] : 80;
-        $fp = @fsockopen($purl['host'], $port, $errno, $errstr, 10);
-        if (!$fp) {
-            include_once "PEAR.php";
-            return PEAR::raiseError("HTTP::head error $errstr ($errno)");
+        $p = parse_url($url);
+        if (!isset($p['scheme'])) {
+            $p = parse_url(HTTP::absoluteURI($url));
+        } elseif ($p['scheme'] != 'http') {
+            return HTTP::raiseError('Unsupported protocol: '. $p['scheme']);
         }
-        $path = (!empty($purl['path'])) ? $purl['path'] : '/';
-        $path .= (!empty($purl['query'])) ? '?' . $purl['query'] : '';
+
+        $port = isset($p['port']) ? $p['port'] : 80;
+
+        if (!$fp = @fsockopen($p['host'], $port, $eno, $estr, $timeout)) {
+            return HTTP::raiseError("Connection error: $estr ($eno)");
+        }
+
+        $path  = !empty($p['path']) ? $p['path'] : '/';
+        $path .= !empty($p['query']) ? '?' . $p['query'] : '';
 
         fputs($fp, "HEAD $path HTTP/1.0\r\n");
-        fputs($fp, "Host: " . $purl['host'] . "\r\n");
+        fputs($fp, 'Host: ' . $p['host'] . ':' . $port . "\r\n");
         fputs($fp, "Connection: close\r\n\r\n");
 
         $response = rtrim(fgets($fp, 4096));
@@ -176,33 +209,117 @@ class HTTP
     }
 
     /**
-    * This function redirects the client. This is done by issuing
-    * a Location: header and exiting.
+    * Redirect
+    * 
+    * This function redirects the client.  This is done by issuing
+    * a "Location" header and exiting if wanted.
     *
-    * @author Richard Heyes <richard@php.net>
-    * @param  string $url URL where the redirect should go to
+    * @static
+    * @access   public
+    * @return   mixed   Returns true on succes (or exits) or false if headers
+    *                   have already been sent.
+    * @param    string  $url URL where the redirect should go to.
+    * @param    bool    $exit Whether to exit immediately after redirection.
     */
-    function redirect($url)
+    function redirect($url, $exit = true)
     {
-        if (!preg_match('/^(https?|ftp):\/\//', $url)) {
-            $server = 'http' . (@$_SERVER['HTTPS'] == 'on' ? 's' : '') . '://' . $_SERVER['SERVER_NAME'];
-            if ($_SERVER['SERVER_PORT'] != 80 &&
-                $_SERVER['SERVER_PORT'] != 443) {
-                $server .= ':' . $_SERVER['SERVER_PORT'];
+        if (headers_sent()) {
+            return false;
+        }
+        
+        header('Location: '. HTTP::absoluteURI($url));
+        
+        if ($exit) {
+            exit;
+        }
+        return true;
+    }
+
+    /**
+    * Absolute URI
+    * 
+    * This function returns the absolute URI for the partial URL passed.
+    * The current scheme (HTTP/HTTPS), host server, port, current script
+    * location are used if necessary to resolve any relative URLs.
+    * 
+    * Offsets potentially created by PATH_INFO are taken care of to resolve
+    * relative URLs to the current script.
+    * 
+    * You can choose a new protocol while resolving the URI.  This is 
+    * particularly useful when redirecting a web browser using relative URIs 
+    * and to switch from HTTP to HTTPS, or vice-versa, at the same time.
+    *
+    * @author Philippe Jausions <Philippe.Jausions@11abacus.com>
+    *
+    * @static
+    * @access   public
+    * @return   string  The absolute URI.
+    * @param    string  $url Absolute or relative URI the redirect should go to
+    * @param    string  $protocol Protocol to use when redirecting URIs.
+    * @param    integer $port A new port number.
+    */
+    function absoluteURI($url, $protocol = null, $port = null)
+    {
+        // Mess around with already absolute URIs
+        if (preg_match('!^([a-z0-9]+)://!i', $url)) {
+            if (empty($protocol) && empty($port)) {
+                return $url;
             }
-			
-			$path = dirname($_SERVER['PHP_SELF']);
-            if ($url{0} != '/') {
-				$path   .= $url;
-                $server .= dirname($_SERVER['PHP_SELF']);
-                $url = $server . '/' . preg_replace('!^\./!', '', $url);
-            } else {
-                $url = $server . $url;
+            if (!empty($protocol)) {
+                $url = $protocol .':'. array_pop(explode(':', $url, 2));
             }
+            if (!empty($port)) {
+                $url = preg_replace('!^(([a-z0-9]+)://[^/:]+)(:[\d]+)?!i', 
+                    '\1:'. $port, $url);
+            }
+            return $url;
+        }
+            
+        $host = 'localhost';
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            list($host) = explode(':', $_SERVER['HTTP_HOST']);
+        } elseif (!empty($_SERVER['SERVER_NAME'])) {
+            list($host) = explode(':', $_SERVER['SERVER_NAME']);
         }
 
-        header('Location: ' . $url);
-        exit;
+        if (empty($protocol)) {
+            $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+            if (!isset($port) || $port != intval($port)) {
+                $port = $_SERVER['SERVER_PORT'];
+            }
+        }
+        
+        $server = $protocol .'://'. $host . (isset($port) ? ':'. $port : '');
+        
+        if ($url{0} == '/') {
+            return $server . $url;
+        }
+        
+        // Check for PATH_INFO
+        if (isset($_SERVER['PATH_INFO'])) {
+            $path = dirname(substr($_SERVER['PHP_SELF'], 0, -strlen($_SERVER['PATH_INFO'])));
+        } else {
+            $path = dirname($_SERVER['PHP_SELF']);
+        }
+        
+        return $server . strtr($path, '\\', '/') . $url;
+    }
+
+    /**
+    * Raise Error
+    * 
+    * Lazy raising of PEAR_Errors.
+    * 
+    * @static
+    * @access   protected
+    * @return   object  PEAR_Error
+    * @param    mixed   $error
+    * @param    int     $code
+    **/
+    function raiseError($error = null, $code = null)
+    {
+        require_once 'PEAR.php';
+        return PEAR::raiseError($error, $code);
     }
 }
 ?>
