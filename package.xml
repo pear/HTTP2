@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
-<!-- $Revision: 1.29 $ -->
+<!-- $Revision: 1.30 $ -->
 <package version="1.0">
  <name>HTTP</name>
  <summary>Miscellaneous HTTP utilities</summary>
@@ -36,8 +36,8 @@ language negotiation or HTTP redirection.
   <date>2004-09-21</date>
   <notes>
 <![CDATA[
-* Fix Bug #2325 - notice if absoluteUri()'s invoked from CLI
-* Fix Bug #2332 - optional unconditional compliance to RFC 2616 for redirect()
+* Fixed Bug #2325 - notice if absoluteUri()'s invoked from CLI
+* Fixed Bug #2332 - optional unconditional compliance to RFC 2616 for redirect()
 + Made the $url parameter in absoluteURI() optional, so that the actual URI will be returned if omitted
 ]]>
   </notes>
