@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<!-- $Revision: 1.20 $ -->
+<!-- $Revision: 1.21 $ -->
 <package version="1.0">
  <name>HTTP</name>
  <summary>Miscellaneous HTTP utilities</summary>
@@ -38,7 +38,6 @@ HTTP-related stuff like date formatting or language negotiation.
 * Fix Bug #1349
 * Fix Bug #1340
 + added HTTP::absoluteURI()
-+ implemented boolean $loose parameter in negotiateLanguage()
 ]]>
   </notes>
   <filelist>
