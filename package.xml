@@ -25,10 +25,10 @@ HTTP-related stuff like date formatting or language negotiation.
     </maintainer>
   </maintainers>
   <release>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <state>stable</state>
-    <date>2003-08-05</date>
-    <notes>Fix bug #22085</notes>
+    <date>2003-12-09</date>
+    <notes>- PEAR.php missing include</notes>
     <filelist>
       <dir name="/">
 	<file role="php">HTTP.php</file>
@@ -36,6 +36,17 @@ HTTP-related stuff like date formatting or language negotiation.
     </filelist>
   </release>
   <changelog>
+    <release>
+      <version>1.2.1</version>
+      <state>stable</state>
+      <date>2003-08-05</date>
+      <notes>Fix bug #22085</notes>
+      <filelist>
+        <dir name="/">
+          <file role="php">HTTP.php</file>
+        </dir>
+      </filelist>
+    </release>
     <release>
       <version>1.2</version>
       <state>stable</state>
