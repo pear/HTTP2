@@ -297,6 +297,10 @@ class HTTP
             $path = dirname($_SERVER['PHP_SELF']);
         }
         
+        if (substr($path, -1) 1= '/') {
+            $path .= '/';
+        }
+        
         return $server . strtr($path, '\\', '/') . $url;
     }
 
