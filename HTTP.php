@@ -78,6 +78,8 @@ class HTTP
     {
         global $HTTP_SERVER_VARS;
 
+        $supported = array_change_key_case($supported, CASE_LOWER);
+
         /* If the client has sent an Accept-Language: header, see if
          * it contains a language we support.
          */
@@ -89,7 +91,7 @@ class HTTP
                     $l = $arr[1];
                 } else {
                     $q = 42;
-                    $l = $accepted[$i];
+                    $l = strtolower($accepted[$i]);
                 }
 
                 if (!empty($supported[$l]) && ($q > 0.0)) {
