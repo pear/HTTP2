@@ -1,10 +1,10 @@
-To install the HTTP package you currently have to make a distribution
+To install the NNTP package you currently have to make a distribution
 tarball first:
 
 $ pear package package.xml
 
-This will result in a file called HTTP-1.0.tgz that you have to install:
+This will result in a file called NNTP-0.1.tgz that you have to install:
 
-$ pear install HTTP-1.0.tgz
+$ pear install NNTP-0.1.tgz
 
 Now you are all set.

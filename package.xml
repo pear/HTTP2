@@ -2,22 +2,22 @@
 <!-- do not use the "Type" attribute here, that one is only for
      generated package.xml files -->
 <Package>
-  <Name>HTTP</Name>
-  <Summary>Miscellaneous HTTP utilities</Summary>
+  <Name>NNTP</Name>
+  <Summary>Communicate with an NNTP server</Summary>
   <Maintainer>
-    <Initials>SSB</Initials>
-    <Name>Stig Sæther Bakken</Name>
-    <Email>stig@php.net</Email>
+    <Initials>MK</Initials>
+    <Name>Martin Kaltoft</Name>
+    <Email>kaltoft@php.net</Email>
   </Maintainer>
   <Release>
-    <Version>1.0</Version>
-    <Date>2001-04-15</Date>
+    <Version>0.1</Version>
+    <Date>2001-04-19</Date>
     <Notes>
-      This is the initial independent release of the HTTP package.
+      This is the initial independent release of the NNTP package.
     </Notes>
   </Release>
   <FileList>
     <Dir>/</Dir>
-    <File>HTTP.php</File>
+    <File>NNTP.php</File>
   </FileList>
 </Package>
