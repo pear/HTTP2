@@ -150,7 +150,7 @@ class HTTP
             include_once "PEAR.php";
             return PEAR::raiseError("HTTP::head Error $errstr ($erno)");
         }
-        $path = (!empty($purl['path'])) ? $purl['path'] : '/';
+        $path .= (!empty($purl['query'])) ? '?' . $purl['query'] : '';
 
         fputs($fp, "HEAD $path HTTP/1.0\r\n");
         fputs($fp, "Host: " . $purl['host'] . "\r\n");
