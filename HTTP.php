@@ -291,7 +291,11 @@ class HTTP
         }
 
         if (empty($protocol)) {
-            $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+            if (isset($_SERVER['HTTPS']) && !strcasecmp($_SERVER['HTTPS'], 'on')) {
+                $protocol = 'https';
+            } else {
+                $protocol = 'http';
+            }
             if (!isset($port) || $port != intval($port)) {
                 $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
             }
