@@ -280,7 +280,7 @@ class HTTP
         if (empty($protocol)) {
             $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
             if (!isset($port) || $port != intval($port)) {
-                $port = $_SERVER['SERVER_PORT'];
+                $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
             }
         }
         
