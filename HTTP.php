@@ -28,14 +28,15 @@ class HTTP
      * Format a RFC compliant HTTP header.  This function
      * honors the "y2k_compliance" php.ini directive.
      *
-     * @param $time int UNIX timestamp
+     * @param int $time UNIX timestamp
      *
-     * @return HTTP date string, or false for an invalid timestamp.
+     * @return mixed HTTP date string, or false for an invalid timestamp.
      *
      * @author Stig Bakken <ssb@fast.no>
      * @author Sterling Hughes <sterling@php.net>
      */
-    function Date($time) {
+    function Date($time)
+    {
         /* If we're y2k compliant, use the newer, reccomended RFC 822
            format */
         if (ini_get("y2k_compliance") == true) {
@@ -62,16 +63,19 @@ class HTTP
      *
      *  Accept-Language: en-UK;q=0.7, en-US;q=0.6, no;q=1.0, dk;q=0.8
      *
-     * @param $supported an associative array indexed by language
+     * @param array $supported an associative array indexed by language
      * codes (country codes) supported by the application.  Values
      * must evaluate to true.
      *
-     * @param $default the default language to use if none is found
+     * @param string $default the default language to use if none is found
      * during negotiation, defaults to "en-US" for U.S. English
+     *
+     * @return string the negotiated language result
      *
      * @author Stig Bakken <ssb@fast.no>
      */
-    function negotiateLanguage(&$supported, $default = 'en-US') {
+    function negotiateLanguage(&$supported, $default = 'en-US')
+    {
         global $HTTP_SERVER_VARS;
 
         /* If the client has sent an Accept-Language: header, see if
@@ -131,7 +135,7 @@ class HTTP
     *    )
     *
     * @param string $url A valid url, for ex: http://pear.php.net/credits.php
-    * @return mixed Assoc array or PEAR error on no conection
+    * @return mixed Assoc array or PEAR error
     *
     * @author Tomas V.V.Cox <cox@idecnet.com>
     */
@@ -146,7 +150,8 @@ class HTTP
         $path = (!empty($purl['path'])) ? $purl['path'] : '/';
 
         fputs($fp, "HEAD $path HTTP/1.0\r\n");
-        fputs($fp, "Host: " . $purl['host'] . "\r\n\r\n");
+        fputs($fp, "Host: " . $purl['host'] . "\r\n");
+        fputs($fp, "Connection: close\r\n\r\n");
 
         $response = rtrim(fgets($fp, 4096));
         if(preg_match("|^HTTP/[^\s]*\s(.*?)\s|", $response, $status)) {
@@ -173,7 +178,7 @@ class HTTP
     * a Location: header and exiting.
     *
     * @author Richard Heyes <richard@php.net>
-    * @param  string  URL where the redirect should go to
+    * @param  string $url URL where the redirect should go to
     */
     function redirect($url)
     {
