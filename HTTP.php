@@ -76,15 +76,13 @@ class HTTP
      */
     function negotiateLanguage(&$supported, $default = 'en-US')
     {
-        global $HTTP_SERVER_VARS;
-
         $supported = array_change_key_case($supported, CASE_LOWER);
 
         /* If the client has sent an Accept-Language: header, see if
          * it contains a language we support.
          */
-        if (isset($HTTP_SERVER_VARS['HTTP_ACCEPT_LANGUAGE'])) {
-            $accepted = split(',[[:space:]]*', $HTTP_SERVER_VARS['HTTP_ACCEPT_LANGUAGE']);
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $accepted = split(',[[:space:]]*', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
             for ($i = 0; $i < count($accepted); $i++) {
                 if (eregi('^([a-z_-]+);[[:space:]]*q=([0-9\.]+)', $accepted[$i], $arr)) {
                     $q = (double)$arr[2];
@@ -111,8 +109,8 @@ class HTTP
         /* Check for a valid language code in the top-level domain of
          * the client's host address.
          */
-        if (isset($HTTP_SERVER_VARS['REMOTE_HOST']) &&
-            ereg("\.[^\.]+$", $HTTP_SERVER_VARS['REMOTE_HOST'], $arr)) {
+        if (isset($_SERVER['REMOTE_HOST']) &&
+            ereg("\.[^\.]+$", $_SERVER['REMOTE_HOST'], $arr)) {
             $lang = strtolower($arr[1]);
             if (!empty($supported[$lang])) {
                 return $lang;
@@ -145,10 +143,10 @@ class HTTP
     {
         $purl = parse_url($url);
         $port = (isset($purl['port'])) ? $purl['port'] : 80;
-        $fp = fsockopen($purl['host'], $port, $errno, $errstr, 10);
+        $fp = @fsockopen($purl['host'], $port, $errno, $errstr, 10);
         if (!$fp) {
             include_once "PEAR.php";
-            return PEAR::raiseError("HTTP::head Error $errstr ($erno)");
+            return PEAR::raiseError("HTTP::head error $errstr ($erno)");
         }
         $path = (!empty($purl['path'])) ? $purl['path'] : '/';
         $path .= (!empty($purl['query'])) ? '?' . $purl['query'] : '';
@@ -186,18 +184,17 @@ class HTTP
     */
     function redirect($url)
     {
-        global $HTTP_SERVER_VARS;
         if (!preg_match('/^(https?|ftp):\/\//', $url)) {
-            $server = 'http' . (@$HTTP_SERVER_VARS['HTTPS'] == 'on' ? 's' : '') . '://' . $HTTP_SERVER_VARS['SERVER_NAME'];
-            if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80 &&
-                $HTTP_SERVER_VARS['SERVER_PORT'] != 443) {
-                $server .= ':' . $HTTP_SERVER_VARS['SERVER_PORT'];
+            $server = 'http' . (@$_SERVER['HTTPS'] == 'on' ? 's' : '') . '://' . $_SERVER['SERVER_NAME'];
+            if ($_SERVER['SERVER_PORT'] != 80 &&
+                $_SERVER['SERVER_PORT'] != 443) {
+                $server .= ':' . $_SERVER['SERVER_PORT'];
             }
 			
-			$path = dirname($HTTP_SERVER_VARS['PHP_SELF']);
+			$path = dirname($_SERVER['PHP_SELF']);
             if ($url{0} != '/') {
 				$path   .= $url;
-                $server .= dirname($HTTP_SERVER_VARS['PHP_SELF']);
+                $server .= dirname($_SERVER['PHP_SELF']);
                 $url = $server . '/' . preg_replace('!^\./!', '', $url);
             } else {
                 $url = $server . $url;
