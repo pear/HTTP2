@@ -147,6 +147,7 @@ class HTTP
         $port = (isset($purl['port'])) ? $purl['port'] : 80;
         $fp = fsockopen($purl['host'], $port, $errno, $errstr, 10);
         if (!$fp) {
+            require_once "PEAR.php";
             return PEAR::raiseError("HTTP::head Error $errstr ($erno)");
         }
         $path = (!empty($purl['path'])) ? $purl['path'] : '/';
