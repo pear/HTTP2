@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<!-- $Revision: 1.23 $ -->
+<!-- $Revision: 1.24 $ -->
 <package version="1.0">
  <name>HTTP</name>
  <summary>Miscellaneous HTTP utilities</summary>
  <description>
-The HTTP class is a class with static methods for doing miscellaneous
-HTTP-related stuff like date formatting or language negotiation.
+The HTTP class is a class with static methods for doing 
+miscellaneous HTTP related stuff like date formatting,
+language negotiation or HTTP redirection.
  </description>
  <license>PHP License</license>
  <maintainers>
