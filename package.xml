@@ -14,6 +14,7 @@
   </maintainers>
   <release>
     <version>1.1</version>
+    <state>stable</state>
     <date>2002-02-18</date>
     <notes>
       Fixes some language negotiation bugs.
