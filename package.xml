@@ -5,7 +5,7 @@
   <name>HTTP</name>
   <summary>Miscellaneous HTTP utilities</summary>
   <maintainer>
-    <initials>SSB</initials>
+    <user>SSB</user>
     <name>Stig Sæther Bakken</name>
     <email>stig@php.net</email>
   </maintainer>
