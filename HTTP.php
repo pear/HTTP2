@@ -19,9 +19,16 @@
 //
 // $Id$
 //
-// HTTP utility functions.
-//
 
+/**
+* HTTP utility functions.
+*
+* Provides functions needed for HTTP-Connections
+*
+* @access public
+* @version $Revision$
+* @package HTTP
+*/
 class HTTP
 {
     /**
@@ -34,6 +41,7 @@ class HTTP
      * @return HTTP date string, or false for an invalid timestamp.
      *
      * @author Stig Bakken <ssb@fast.no>
+     * @access public
      */
     function Date($time)
     {
@@ -56,14 +64,17 @@ class HTTP
      *
      *  Accept-Language: en_UK;q=0.7, en_US;q=0.6, no;q=1.0, dk;q=0.8
      *
-     * @param $supported an associative array indexed by language
+     * @param array $supported an associative array indexed by language
      * codes (country codes) supported by the application.  Values
      * must evaluate to true.
      *
-     * @param $default the default language to use if none is found
+     * @param string $default the default language to use if none is found
      * during negotiation, defaults to "en_US" for U.S. English
      *
+     * @return array contains all possible languages
+     *
      * @author Stig Bakken <ssb@fast.no>
+     * @access public
      */
     function negotiateLanguage(&$supported, $default = 'en_US')
     {
