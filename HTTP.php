@@ -260,7 +260,7 @@ class HTTP
      * @param   string  $protocol Protocol to use when redirecting URIs.
      * @param   integer $port A new port number.
      */
-    function absoluteURI($url, $protocol = null, $port = null)
+    function absoluteURI($url = null, $protocol = null, $port = null)
     {
         // Mess around with already absolute URIs
         if (preg_match('!^([a-z0-9]+)://!i', $url)) {
@@ -299,6 +299,11 @@ class HTTP
         }
 
         $server = $protocol .'://'. $host . (isset($port) ? ':'. $port : '');
+        
+        if (!strlen($url)) {
+            $url = isset($_SERVER['REQUEST_URI']) ? 
+                $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
+        }
         
         if ($url{0} == '/') {
             return $server . $url;
