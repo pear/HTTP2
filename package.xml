@@ -44,10 +44,10 @@ HTTP-related stuff like date formatting or language negotiation.
         <file role="php">HTTP.php</file>
       </dir>
     </filelist>
-	<deps>
+    <deps>
 	  <dep type="pkg" rel="has">PEAR</dep>
 	  <dep type="ext" rel="has">pcre</dep>
 	  <dep type="PHP" rel="ge" version="4.0.6"/>
-	</deps>
+    </deps>
   </release>
 </package>
