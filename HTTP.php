@@ -146,7 +146,7 @@ class HTTP
         $fp = @fsockopen($purl['host'], $port, $errno, $errstr, 10);
         if (!$fp) {
             include_once "PEAR.php";
-            return PEAR::raiseError("HTTP::head error $errstr ($erno)");
+            return PEAR::raiseError("HTTP::head error $errstr ($errno)");
         }
         $path = (!empty($purl['path'])) ? $purl['path'] : '/';
         $path .= (!empty($purl['query'])) ? '?' . $purl['query'] : '';
