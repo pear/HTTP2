@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "../../php4/pehttp://pear.php.net/dtd/package-1.0">
-<!-- do not use the "Type" attribute here, that one is only for
-     generated package.xml files -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0">
   <name>HTTP</name>
   <summary>Miscellaneous HTTP utilities</summary>
   <description>
 The HTTP class is a class with static methods for doing miscellaneous
 HTTP-related stuff like date formatting or language negotiation.
-</description>
+  </description>
   <license>PHP License</license>
   <maintainers>
     <maintainer>
@@ -23,57 +21,28 @@ HTTP-related stuff like date formatting or language negotiation.
       <email>pajoye@php.net</email>
       <role>lead</role>
     </maintainer>
+    <maintainter>
+      <user>mike</user>
+	  <name>Michael Wallner</name>
+	  <email>mike@php.net</email>
+	  <role>lead</role>
+    </maintainter>
   </maintainers>
   <release>
-    <version>1.2.3</version>
+    <version>1.3.0</version>
     <state>stable</state>
-    <date>2004-02-25</date>
-    <notes>- Fix bug #802 (use $_SERVER variables 
-, Silence fsock_open) (mj)
-- Fix bug #799 (lost of the query part) (mj)
-</notes>
+    <date>2004-06-09</date>
+    <notes>
+<![CDATA[
+* Fix Bug #1349
+* Fix Bug #1340
++ added HTTP::absoluteURI()
+]]>
+    </notes>
     <filelist>
       <dir name="/">
-	<file role="php">HTTP.php</file>
+        <file role="php">HTTP.php</file>
       </dir>
     </filelist>
   </release>
-  <changelog>
-   <release>
-    <version>1.2.2</version>
-    <state>stable</state>
-    <date>2003-12-09</date>
-    <notes>- PEAR.php missing include</notes>
-   </release>
-   <release>
-      <version>1.2.1</version>
-      <state>stable</state>
-      <date>2003-08-05</date>
-      <notes>Fix bug #22085</notes>
-      <filelist>
-        <dir name="/">
-          <file role="php">HTTP.php</file>
-        </dir>
-      </filelist>
-    </release>
-    <release>
-      <version>1.2</version>
-      <state>stable</state>
-      <date>2002-04-08</date>
-      <notes>New methods: head and redirect</notes>
-    </release>
-    <release>
-      <version>1.1</version>
-      <state>stable</state>
-      <date>2002-02-18</date>
-      <notes>Fixes some language negotiation bugs.</notes>
-    </release>
-    <release>
-      <version>1.0</version>
-      <date>2001-08-03</date>
-      <notes>
-      This is the initial independent release of the HTTP package.
-    </notes>
-    </release>
-  </changelog>
 </package>
