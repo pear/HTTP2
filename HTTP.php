@@ -57,7 +57,7 @@ class HTTP
         }
         
         // RFC822 or RFC850
-        $format = ini_get('y2k_compliance') ? 'D, d M Y' : 'F, d-D-y';
+        $format = ini_get('y2k_compliance') ? 'D, d M Y' : 'l, d-M-y';
         
         return gmdate($format .' H:i:s \G\M\T', $time);
     }
