@@ -175,6 +175,7 @@ class HTTP {
     * a Location: header and exiting.
     *
     * @author Richard Heyes <richard@php.net>
+    * @param  string  URL where the redirect should go to
     */
     function redirect($url)
     {
