@@ -326,11 +326,11 @@ class HTTP
             $path = dirname($_SERVER['PHP_SELF']);
         }
         
-        if (substr($path, -1) != '/') {
+        if (substr($path = strtr($path, '\\', '/'), -1) != '/') {
             $path .= '/';
         }
         
-        return $server . strtr($path, '\\', '/') . $url;
+        return $server . $path . $url;
     }
 
     /**
