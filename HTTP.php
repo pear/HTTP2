@@ -169,5 +169,17 @@ class HTTP {
         fclose($fp);
         return $headers;
     }
+
+    /**
+    * This function redirects the client. This is done by issuing
+    * a Location: header and exiting.
+    *
+    * @author Richard Heyes <richard@php.net>
+    */
+    function redirect($url)
+    {
+        header('Location: ' . $url);
+        exit;
+    }
 }
 ?>
