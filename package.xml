@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
-<!-- $Revision: 1.34 $ -->
+<!-- $Revision: 1.35 $ -->
 <package version="1.0">
  <name>HTTP</name>
  <summary>Miscellaneous HTTP utilities</summary>
@@ -27,7 +27,7 @@ language negotiation or HTTP redirection.
  <release>
   <version>1.3.4</version>
   <state>stable</state>
-  <date>2005-02-00</date>
+  <date>2005-02-08</date>
   <notes>
 <![CDATA[
 * stripping CR/LF characters from $url in HTTP::absoluteURI()
