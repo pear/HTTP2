@@ -1,32 +1,43 @@
 <?php
-// +----------------------------------------------------------------------+
-// | PEAR :: HTTP                                                         |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 3.0 of the PHP license,       |
-// | that is available at http://www.php.net/license/3_0.txt              |
-// | If you did not receive a copy of the PHP license and are unable      |
-// | to obtain it through the world-wide-web, please send a note to       |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Stig Bakken <ssb@fast.no>                                   |
-// |          Sterling Hughes <sterling@php.net>                          |
-// |          Tomas V.V.Cox <cox@idecnet.com>                             |
-// |          Richard Heyes <richard@php.net>                             |
-// |          Philippe Jausions <Philippe.Jausions@11abacus.com>          |
-// |          Michael Wallner <mike@php.net>                              |
-// +----------------------------------------------------------------------+
-//
-// $Id$
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * HTTP
  * 
- * HTTP utility functions
- * 
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   HTTP
+ * @package    HTTP
+ * @author     Stig Bakken <ssb@fast.no>
+ * @author     Sterling Hughes <sterling@php.net>
+ * @author     Tomas V.V.Cox <cox@idecnet.com>
+ * @author     Richard Heyes <richard@php.net>
+ * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
+ * @author     Michael Wallner <mike@php.net>
+ * @copyright  1997-2005 The PHP Group
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    CVS: $Id$
+ * @link       http://pear.php.net/package/HTTP
+ */
+
+/**
+ * Miscellaneous HTTP Utilities
+ *
+ * PEAR::HTTP provides static shorthand methods for generating HTTP dates,
+ * issueing HTTP HEAD requests, building absolute URIs, firing redirects and
+ * negotiating user preferred language.
+ *
  * @package     HTTP
  * @category    HTTP
  * @license     PHP License
  * @access      public
+ * @static
  * @version     $Revision$
  */
 class HTTP
@@ -350,4 +361,5 @@ class HTTP
         return PEAR::raiseError($error, $code);
     }
 }
+
 ?>
