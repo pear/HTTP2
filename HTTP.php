@@ -107,14 +107,16 @@ class HTTP
         $matches = array();
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
-                @list($l, $q) = array_map('strtolower', 
-                    array_map('trim', explode(';', $lang)));
+                $lang = array_map('trim', explode(';', $lang)));
+                if (isset($lang[1])) {
+                    $l = strtolower($lang[0]);
+                    $q = (float) str_replace('q=', '', $lang[1]);
+                } else {
+                    $l = strtolower($lang[0]);
+                    $q = null;
+                }
                 if (isset($supp[$l])) {
-                    if (isset($q)) {
-                        $matches[$l] = (float) str_replace('q=', '', $q);
-                    } else {
-                        $matches[$l] = 1000 - count($matches);
-                    }
+                    $matches[$l] = isset($q) ? $q : 1000 - count($matches);
                 }
             }
         }
@@ -229,7 +231,8 @@ class HTTP
         $url = HTTP::absoluteURI($url);
         header('Location: '. $url);
         
-        if ($rfc2616 && @$_SERVER['REQUEST_METHOD'] != 'HEAD') {
+        if (    $rfc2616 && isset($_SERVER['REQUEST_METHOD'] &&
+                $_SERVER['REQUEST_METHOD'] != 'HEAD') {
             printf('Redirecting to: <a href="%s">%s</a>.', $url, $url);
         }
         if ($exit) {
