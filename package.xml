@@ -15,13 +15,20 @@ HTTP-related stuff like date formatting or language negotiation.
       <user>ssb</user>
       <name>Stig Sæther Bakken</name>
       <email>stig@php.net</email>
+      <role>lead</role> 
+    </maintainer>
+    <maintainer>
+      <user>pajoye</user>
+      <name>Pierre-Alain Joye</name>
+      <email>pajoye@php.net</email>
+      <role>lead</role>
     </maintainer>
   </maintainers>
   <release>
-    <version>1.2</version>
+    <version>1.2.1</version>
     <state>stable</state>
-    <date>2002-04-08</date>
-    <notes>New methods: head and redirect</notes>
+    <date>2003-08-05</date>
+    <notes>Fix bug #22085</notes>
     <filelist>
       <dir name="/">
 	<file role="php">HTTP.php</file>
@@ -29,6 +36,12 @@ HTTP-related stuff like date formatting or language negotiation.
     </filelist>
   </release>
   <changelog>
+    <release>
+      <version>1.2</version>
+      <state>stable</state>
+      <date>2002-04-08</date>
+      <notes>New methods: head and redirect</notes>
+    </release>
     <release>
       <version>1.1</version>
       <state>stable</state>
