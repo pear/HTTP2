@@ -284,6 +284,13 @@ class HTTP
             }
         }
         
+        if ($protocol == 'http' && $port == 80) {
+            unset($port);
+        }
+        if ($protocol == 'https' && $port == 443) {
+            unset($port);
+        }
+
         $server = $protocol .'://'. $host . (isset($port) ? ':'. $port : '');
         
         if ($url{0} == '/') {
