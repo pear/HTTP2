@@ -263,7 +263,7 @@ class HTTP
     function absoluteURI($url = null, $protocol = null, $port = null)
     {
         // filter CR/LF
-        $url = str_replace(array("\r", "\n"), '', $url);
+        $url = str_replace(array("\r", "\n"), ' ', $url);
         
         // Mess around with already absolute URIs
         if (preg_match('!^([a-z0-9]+)://!i', $url)) {
