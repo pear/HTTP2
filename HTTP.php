@@ -19,21 +19,15 @@
 //
 // $Id$
 //
+// HTTP utility functions.
+//
 
-/**
-* HTTP utility functions.
-*
-* Provides functions needed for HTTP-Connections
-*
-* @access public
-* @version $Revision$
-* @package HTTP
-*/
-class HTTP
-{
+if (!empty($GLOBALS['USED_PACKAGES']['HTTP'])) return;
+$GLOBALS['USED_PACKAGES']['HTTP'] = true;
+
+class HTTP {
     /**
-     * Format a date according to RFC-XXXX (can't remember the HTTP
-     * RFC number off-hand anymore, shame on me).  This function
+     * Format a RFC compliant HTTP header.  This function
      * honors the "y2k_compliance" php.ini directive.
      *
      * @param $time int UNIX timestamp
@@ -41,12 +35,18 @@ class HTTP
      * @return HTTP date string, or false for an invalid timestamp.
      *
      * @author Stig Bakken <ssb@fast.no>
-     * @access public
+     * @author Sterling Hughes <sterling@php.net>
      */
-    function Date($time)
-    {
-        $y = ini_get("y2k_compliance") ? "Y" : "y";
-        return gmdate("D, d M $y H:i:s", $time);
+    function Date($time) {
+        /* If we're y2k compliant, use the newer, reccomended RFC 822
+           format */
+        if (ini_get("y2k_compliance") == true) {
+            return gmdate("D, d M Y H:i:s \G\M\T", $time);
+        }
+        /* Use RFC-850 which supports two character year numbers */
+        else {
+            return gmdate("F, d-D-y H:i:s \G\M\T", $time);
+        }
     }
 
     /**
@@ -64,35 +64,32 @@ class HTTP
      *
      *  Accept-Language: en-UK;q=0.7, en-US;q=0.6, no;q=1.0, dk;q=0.8
      *
-     * @param array $supported an associative array indexed by language
+     * @param $supported an associative array indexed by language
      * codes (country codes) supported by the application.  Values
      * must evaluate to true.
      *
-     * @param string $default the default language to use if none is found
+     * @param $default the default language to use if none is found
      * during negotiation, defaults to "en-US" for U.S. English
      *
-     * @return array contains all possible languages
-     *
      * @author Stig Bakken <ssb@fast.no>
-     * @access public
      */
-    function negotiateLanguage(&$supported, $default = 'en-US')
-    {
+    function negotiateLanguage(&$supported, $default = 'en-US') {
         global $HTTP_SERVER_VARS;
-        
+
         /* If the client has sent an Accept-Language: header, see if
          * it contains a language we support.
          */
         if (isset($HTTP_SERVER_VARS['HTTP_ACCEPT_LANGUAGE'])) {
-            $accepted = split(',[[:space:]]*', $HTTP_ACCEPT_LANGUAGE);
+            $accepted = split(',[[:space:]]*', $HTTP_SERVER_VARS['HTTP_ACCEPT_LANGUAGE']);
             for ($i = 0; $i < count($accepted); $i++) {
-                if (eregi('^([a-z]+);[[:space:]]*q=([0-9\.]+)', $accepted[$i], &$arr)) {
+                if (eregi('^([a-z]+);[[:space:]]*q=([0-9\.]+)', $accepted[$i], $arr)) {
                     $q = (double)$arr[2];
                     $l = $arr[1];
                 } else {
                     $q = 42;
                     $l = $accepted[$i];
                 }
+
                 if (!empty($supported[$l]) && ($q > 0.0)) {
                     if ($q == 42) {
                         return $l;
@@ -110,7 +107,8 @@ class HTTP
         /* Check for a valid language code in the top-level domain of
          * the client's host address.
          */
-        if (ereg("\.[^\.]+$", $HTTP_SERVER_VARS['REMOTE_HOST'], &$arr)) {
+        if (isset($HTTP_SERVER_VARS['REMOTE_HOST']) &&
+            ereg("\.[^\.]+$", $HTTP_SERVER_VARS['REMOTE_HOST'], $arr)) {
             $lang = strtolower($arr[1]);
             if (!empty($supported[$lang])) {
                 return $lang;
@@ -118,6 +116,58 @@ class HTTP
         }
 
         return $default;
+    }
+
+    /**
+    * Sends a "HEAD" HTTP command to a server and returns the headers
+    * as an associative array. Example output could be:
+    *    Array
+    *    (
+    *        [response_code] => 200          // The HTTP response code
+    *        [response] => HTTP/1.1 200 OK   // The full HTTP response string
+    *        [Date] => Fri, 11 Jan 2002 01:41:44 GMT
+    *        [Server] => Apache/1.3.20 (Unix) PHP/4.1.1
+    *        [X-Powered-By] => PHP/4.1.1
+    *        [Connection] => close
+    *        [Content-Type] => text/html
+    *    )
+    *
+    * @param string $url A valid url, for ex: http://pear.php.net/credits.php
+    * @return mixed Assoc array or PEAR error on no conection
+    *
+    * @author Tomas V.V.Cox <cox@idecnet.com>
+    */
+    function head($url)
+    {
+        $purl = parse_url($url);
+        $port = (isset($purl['port'])) ? $purl['port'] : 80;
+        $fp = fsockopen($purl['host'], $port, $errno, $errstr, 10);
+        if (!$fp) {
+            return PEAR::raiseError("HTTP::head Error $errstr ($erno)");
+        }
+        $path = (!empty($purl['path'])) ? $purl['path'] : '/';
+
+        fputs($fp, "HEAD $path HTTP/1.0\r\n");
+        fputs($fp, "Host: " . $purl['host'] . "\r\n\r\n");
+
+        $response = rtrim(fgets($fp, 4096));
+        if(preg_match("|^HTTP/[^\s]*\s(.*?)\s|", $response, $status)) {
+            $headers['response_code'] = $status[1];
+        }
+        $headers['response'] = $response;
+
+        while ($line = fgets($fp, 4096)) {
+            if (!trim($line)) {
+                break;
+            }
+            if (($pos = strpos($line, ':')) !== false) {
+                $header = substr($line, 0, $pos);
+                $value  = trim(substr($line, $pos + 1));
+                $headers[$header] = $value;
+            }
+        }
+        fclose($fp);
+        return $headers;
     }
 }
 ?>
