@@ -179,12 +179,21 @@ class HTTP {
     */
     function redirect($url)
     {
-        if (!preg_match('/^(ht|f)tp:\/\//', $url)) {
-            require_once('Net/URL.php');
-            $url = &new Net_URL($url);
+        global $HTTP_SERVER_VARS;
+        if (!preg_match('/^(ht|f)tps?:\/\//', $url)) {
+            $context = 'http' . (@$HTTP_SERVER_VARS['HTTPS'] == 'on' ? 's' : '') . '://' . $HTTP_SERVER_VARS['SERVER_NAME'];
+            if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {
+                $context .= ':' . $HTTP_SERVER_VARS['SERVER_PORT'];
+            }
+            if ($url[0] != '/') {
+                $context .= dirname($HTTP_SERVER_VARS['PHP_SELF']);
+                $url = $context . '/' . preg_replace('!^\./!', '', $url);
+            } else {
+                $url = $context . $url;
+            }
         }
 
-        header('Location: ' . $url->getURL());
+        header('Location: ' . $url);
         exit;
     }
 }
