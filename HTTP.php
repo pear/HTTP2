@@ -179,8 +179,14 @@ class HTTP {
     */
     function redirect($url)
     {
-        header('Location: ' . $url);
+        if (!preg_match('/^(ht|f)tp:\/\//', $url)) {
+            require_once('Net/URL.php');
+            $url = &new Net_URL($url);
+        }
+
+        header('Location: ' . $url->getURL());
         exit;
     }
 }
+
 ?>
