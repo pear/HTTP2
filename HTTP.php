@@ -12,18 +12,18 @@
  * the PHP License and are unable to obtain it through the web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category   HTTP
- * @package    HTTP
- * @author     Stig Bakken <ssb@fast.no>
- * @author     Sterling Hughes <sterling@php.net>
- * @author     Tomas V.V.Cox <cox@idecnet.com>
- * @author     Richard Heyes <richard@php.net>
- * @author     Philippe Jausions <Philippe.Jausions@11abacus.com>
- * @author     Michael Wallner <mike@php.net>
- * @copyright  1997-2005 The PHP Group
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/HTTP
+ * @category    HTTP
+ * @package     HTTP
+ * @author      Stig Bakken <ssb@fast.no>
+ * @author      Sterling Hughes <sterling@php.net>
+ * @author      Tomas V.V.Cox <cox@idecnet.com>
+ * @author      Richard Heyes <richard@php.net>
+ * @author      Philippe Jausions <Philippe.Jausions@11abacus.com>
+ * @author      Michael Wallner <mike@php.net>
+ * @copyright   2002-2005 The Authors
+ * @license     http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version     CVS: $Id$
+ * @link        http://pear.php.net/package/HTTP
  */
 
 /**
