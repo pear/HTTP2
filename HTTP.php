@@ -25,29 +25,29 @@
 //
 
 /**
-* HTTP
-* 
-* HTTP utility functions
-* 
-* @package      HTTP
-* @category     HTTP
-* @version      $Revision$
-* @access       public
-*/
+ * HTTP
+ * 
+ * HTTP utility functions
+ * 
+ * @package     HTTP
+ * @category    HTTP
+ * @version     $Revision$
+ * @access      public 
+ */
 class HTTP
 {
     /**
-    * Date
-    * 
-    * Format a RFC compliant GMT date HTTP header.  This function honors the 
-    * "y2k_compliance" php.ini directive and formats the GMT date corresponding 
-    * to either RFC850 or RFC822.
-    * 
-    * @static
-    * @access   public
-    * @return   mixed   GMT date string, or false for an invalid $time parameter
-    * @param    mixed   $time unix timestamp or date (default = current time)
-    */
+     * Date
+     * 
+     * Format a RFC compliant GMT date HTTP header.  This function honors the 
+     * "y2k_compliance" php.ini directive and formats the GMT date corresponding
+     * to either RFC850 or RFC822.
+     * 
+     * @static 
+     * @access  public 
+     * @return  mixed   GMT date string, or false for an invalid $time parameter
+     * @param   mixed   $time unix timestamp or date (default = current time)
+     */
     function Date($time = null)
     {
         if (!isset($time)) {
@@ -63,39 +63,39 @@ class HTTP
     }
 
     /**
-    * Negotiate Language
-    * 
-    * Negotiate language with the user's browser through the Accept-Language 
-    * HTTP header or the user's host address.  Language codes are generally in 
-    * the form "ll" for a language spoken in only one country, or "ll-CC" for a 
-    * language spoken in a particular country.  For example, U.S. English is 
-    * "en-US", while British English is "en-UK".  Portugese as spoken in
-    * Portugal is "pt-PT", while Brazilian Portugese is "pt-BR".
-    * 
-    * Quality factors in the Accept-Language: header are supported, for example:
-    * Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
-    *
-    * <code>
-    *   require_once 'HTTP.php';
-    *   $langs = array(
-    *       'en'   => 'locales/en',
-    *       'en-US'=> 'locales/en',
-    *       'en-UK'=> 'locales/en',
-    *       'de'   => 'locales/de',
-    *       'de-DE'=> 'locales/de',
-    *       'de-AT'=> 'locales/de',
-    *   );
-    *   $neg = HTTP::negotiateLanguage($langs);
-    *   $dir = $langs[$neg];
-    * </code>
-    * 
-    * @static
-    * @access   public
-    * @return   string  The negotiated language result or the supplied default.
-    * @param    array   $supported An associative array of supported languages,
-    *                   whose values must evaluate to true.
-    * @param    string  $default The default language to use if none is found.
-    */
+     * Negotiate Language
+     * 
+     * Negotiate language with the user's browser through the Accept-Language 
+     * HTTP header or the user's host address.  Language codes are generally in 
+     * the form "ll" for a language spoken in only one country, or "ll-CC" for a 
+     * language spoken in a particular country.  For example, U.S. English is 
+     * "en-US", while British English is "en-UK".  Portugese as spoken in
+     * Portugal is "pt-PT", while Brazilian Portugese is "pt-BR".
+     * 
+     * Quality factors in the Accept-Language: header are supported, e.g.:
+     *      Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
+     * 
+     * <code>
+     *  require_once 'HTTP.php';
+     *  $langs = array(
+     *      'en'   => 'locales/en',
+     *      'en-US'=> 'locales/en',
+     *      'en-UK'=> 'locales/en',
+     *      'de'   => 'locales/de',
+     *      'de-DE'=> 'locales/de',
+     *      'de-AT'=> 'locales/de',
+     *  );
+     *  $neg = HTTP::negotiateLanguage($langs);
+     *  $dir = $langs[$neg];
+     * </code>
+     * 
+     * @static 
+     * @access  public 
+     * @return  string  The negotiated language result or the supplied default.
+     * @param   array   $supported An associative array of supported languages,
+     *                  whose values must evaluate to true.
+     * @param   string  $default The default language to use if none is found.
+     */
     function negotiateLanguage($supported, $default = 'en-US')
     {
         $supp = array();
@@ -108,16 +108,17 @@ class HTTP
         if (!count($supp)) {
             return $default;
         }
-        
+
         $matches = array();
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
-                $l = array_map('trim', array_map('strtolower', explode(';', trim($lang))));
-                if (isset($supp[$l[0]])) {
-                    if (isset($l[1])) {
-                        $matches[$l[0]] = (float) str_replace('q=', '', $l[1]);
+                @list($l, $q) = array_map('strtolower', 
+                    array_map('trim', explode(';', $lang)));
+                if (isset($supp[$l])) {
+                    if (isset($q)) {
+                        $matches[$l] = (float) str_replace('q=', '', $q);
                     } else {
-                        $matches[$l[0]] = 1000 - count($matches);
+                        $matches[$l] = 1000 - count($matches);
                     }
                 }
             }
@@ -139,33 +140,32 @@ class HTTP
     }
 
     /**
-    * Head
-    * 
-    * Sends a "HEAD" HTTP command to a server and returns the headers
-    * as an associative array. Example output could be:
-    * <code>
-    *    Array
-    *    (
-    *        [response_code] => 200          // The HTTP response code
-    *        [response] => HTTP/1.1 200 OK   // The full HTTP response string
-    *        [Date] => Fri, 11 Jan 2002 01:41:44 GMT
-    *        [Server] => Apache/1.3.20 (Unix) PHP/4.1.1
-    *        [X-Powered-By] => PHP/4.1.1
-    *        [Connection] => close
-    *        [Content-Type] => text/html
-    *    )
-    * </code>
-    * 
-    * @see HTTP_Client::head()
-    * @see HTTP_Request
-    *
-    * @static
-    * @access   public
-    * @return   mixed   Returns associative array of response headers on success
-    *                   or PEAR error on failure.
-    * @param    string  $url A valid URL, e.g.: http://pear.php.net/credits.php
-    * @param    integer $timeout Timeout in seconds (default = 10)
-    */
+     * Head
+     * 
+     * Sends a "HEAD" HTTP command to a server and returns the headers
+     * as an associative array. Example output could be:
+     * <code>
+     *     Array
+     *     (
+     *         [response_code] => 200          // The HTTP response code
+     *         [response] => HTTP/1.1 200 OK   // The full HTTP response string
+     *         [Date] => Fri, 11 Jan 2002 01:41:44 GMT
+     *         [Server] => Apache/1.3.20 (Unix) PHP/4.1.1
+     *         [X-Powered-By] => PHP/4.1.1
+     *         [Connection] => close
+     *         [Content-Type] => text/html
+     *     )
+     * </code>
+     * 
+     * @see HTTP_Client::head()
+     * @see HTTP_Request
+     * @static 
+     * @access  public 
+     * @return  mixed   Returns associative array of response headers on success
+     *                  or PEAR error on failure.
+     * @param   string  $url A valid URL, e.g.: http://pear.php.net/credits.php
+     * @param   integer $timeout Timeout in seconds (default = 10)
+     */
     function head($url, $timeout = 10)
     {
         $p = parse_url($url);
@@ -189,7 +189,7 @@ class HTTP
         fputs($fp, "Connection: close\r\n\r\n");
 
         $response = rtrim(fgets($fp, 4096));
-        if(preg_match("|^HTTP/[^\s]*\s(.*?)\s|", $response, $status)) {
+        if (preg_match("|^HTTP/[^\s]*\s(.*?)\s|", $response, $status)) {
             $headers['response_code'] = $status[1];
         }
         $headers['response'] = $response;
@@ -209,18 +209,18 @@ class HTTP
     }
 
     /**
-    * Redirect
-    * 
-    * This function redirects the client.  This is done by issuing
-    * a "Location" header and exiting if wanted.
-    *
-    * @static
-    * @access   public
-    * @return   mixed   Returns true on succes (or exits) or false if headers
-    *                   have already been sent.
-    * @param    string  $url URL where the redirect should go to.
-    * @param    bool    $exit Whether to exit immediately after redirection.
-    */
+     * Redirect
+     * 
+     * This function redirects the client.  This is done by issuing
+     * a "Location" header and exiting if wanted.
+     * 
+     * @static 
+     * @access  public 
+     * @return  mixed   Returns true on succes (or exits) or false if headers
+     *                  have already been sent.
+     * @param   string  $url URL where the redirect should go to.
+     * @param   bool    $exit Whether to exit immediately after redirection.
+     */
     function redirect($url, $exit = true)
     {
         if (headers_sent()) {
@@ -236,28 +236,27 @@ class HTTP
     }
 
     /**
-    * Absolute URI
-    * 
-    * This function returns the absolute URI for the partial URL passed.
-    * The current scheme (HTTP/HTTPS), host server, port, current script
-    * location are used if necessary to resolve any relative URLs.
-    * 
-    * Offsets potentially created by PATH_INFO are taken care of to resolve
-    * relative URLs to the current script.
-    * 
-    * You can choose a new protocol while resolving the URI.  This is 
-    * particularly useful when redirecting a web browser using relative URIs 
-    * and to switch from HTTP to HTTPS, or vice-versa, at the same time.
-    *
-    * @author Philippe Jausions <Philippe.Jausions@11abacus.com>
-    *
-    * @static
-    * @access   public
-    * @return   string  The absolute URI.
-    * @param    string  $url Absolute or relative URI the redirect should go to
-    * @param    string  $protocol Protocol to use when redirecting URIs.
-    * @param    integer $port A new port number.
-    */
+     * Absolute URI
+     * 
+     * This function returns the absolute URI for the partial URL passed.
+     * The current scheme (HTTP/HTTPS), host server, port, current script
+     * location are used if necessary to resolve any relative URLs.
+     * 
+     * Offsets potentially created by PATH_INFO are taken care of to resolve
+     * relative URLs to the current script.
+     * 
+     * You can choose a new protocol while resolving the URI.  This is 
+     * particularly useful when redirecting a web browser using relative URIs 
+     * and to switch from HTTP to HTTPS, or vice-versa, at the same time.
+     * 
+     * @author  Philippe Jausions <Philippe.Jausions@11abacus.com> 
+     * @static 
+     * @access  public 
+     * @return  string  The absolute URI.
+     * @param   string  $url Absolute or relative URI the redirect should go to.
+     * @param   string  $protocol Protocol to use when redirecting URIs.
+     * @param   integer $port A new port number.
+     */
     function absoluteURI($url, $protocol = null, $port = null)
     {
         // Mess around with already absolute URIs
@@ -306,16 +305,16 @@ class HTTP
     }
 
     /**
-    * Raise Error
-    * 
-    * Lazy raising of PEAR_Errors.
-    * 
-    * @static
-    * @access   protected
-    * @return   object  PEAR_Error
-    * @param    mixed   $error
-    * @param    int     $code
-    **/
+     * Raise Error
+     * 
+     * Lazy raising of PEAR_Errors.
+     * 
+     * @static 
+     * @access  protected 
+     * @return  object PEAR_Error
+     * @param   mixed   $error 
+     * @param   int     $code 
+     */
     function raiseError($error = null, $code = null)
     {
         require_once 'PEAR.php';
