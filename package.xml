@@ -11,13 +11,14 @@
   </Maintainer>
   <Release>
     <Version>1.0</Version>
-    <Date>2001-04-15</Date>
+    <Date>2001-08-03</Date>
     <Notes>
       This is the initial independent release of the HTTP package.
     </Notes>
   </Release>
   <FileList>
-    <Dir>/</Dir>
-    <File>HTTP.php</File>
+    <Dir Name="/">
+      <File role="php">HTTP.php</File>
+    </Dir>
   </FileList>
 </Package>
