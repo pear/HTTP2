@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!-- do not use the "Type" attribute here, that one is only for
      generated package.xml files -->
-<Package>
-  <Name>HTTP</Name>
-  <Summary>Miscellaneous HTTP utilities</Summary>
-  <Maintainer>
-    <Initials>SSB</Initials>
-    <Name>Stig Sæther Bakken</Name>
-    <Email>stig@php.net</Email>
-  </Maintainer>
-  <Release>
-    <Version>1.0</Version>
-    <Date>2001-08-03</Date>
-    <Notes>
+<package>
+  <name>HTTP</name>
+  <summary>Miscellaneous HTTP utilities</summary>
+  <maintainer>
+    <initials>SSB</initials>
+    <name>Stig Sæther Bakken</name>
+    <email>stig@php.net</email>
+  </maintainer>
+  <release>
+    <version>1.0</version>
+    <date>2001-08-03</date>
+    <notes>
       This is the initial independent release of the HTTP package.
-    </Notes>
-  </Release>
-  <FileList>
-    <Dir Name="/">
-      <File role="php">HTTP.php</File>
-    </Dir>
-  </FileList>
-</Package>
+    </notes>
+  </release>
+  <filelist>
+    <dir name="/">
+      <file role="php">HTTP.php</file>
+    </dir>
+  </filelist>
+</package>
