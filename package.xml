@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "../package.dtd">
+<!DOCTYPE package SYSTEM "../../php4/pear/package.dtd">
 <!-- do not use the "Type" attribute here, that one is only for
      generated package.xml files -->
 <package version="1.0">
   <name>HTTP</name>
   <summary>Miscellaneous HTTP utilities</summary>
+  <description>
+The HTTP class is a class with static methods for doing miscellaneous
+HTTP-related stuff like date formatting or language negotiation.
+</description>
+  <license>PHP License</license>
   <maintainers>
     <maintainer>
       <user>SSB</user>
@@ -13,23 +18,29 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>1.1</version>
+    <version>1.2</version>
     <state>stable</state>
-    <date>2002-02-18</date>
-    <notes>
-      Fixes some language negotiation bugs.
-    </notes>
+    <date>2002-04-08</date>
+    <notes>New method: redirect</notes>
     <filelist>
       <dir name="/">
 	<file role="php">HTTP.php</file>
       </dir>
     </filelist>
   </release>
-  <changelog><release>
-    <version>1.0</version>
-    <date>2001-08-03</date>
-    <notes>
+  <changelog>
+    <release>
+      <version>1.1</version>
+      <state>stable</state>
+      <date>2002-02-18</date>
+      <notes>Fixes some language negotiation bugs.</notes>
+    </release>
+    <release>
+      <version>1.0</version>
+      <date>2001-08-03</date>
+      <notes>
       This is the initial independent release of the HTTP package.
     </notes>
-  </release></changelog>
+    </release>
+  </changelog>
 </package>

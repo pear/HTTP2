@@ -22,10 +22,8 @@
 // HTTP utility functions.
 //
 
-if (!empty($GLOBALS['USED_PACKAGES']['HTTP'])) return;
-$GLOBALS['USED_PACKAGES']['HTTP'] = true;
-
-class HTTP {
+class HTTP
+{
     /**
      * Format a RFC compliant HTTP header.  This function
      * honors the "y2k_compliance" php.ini directive.
@@ -180,12 +178,13 @@ class HTTP {
     function redirect($url)
     {
         global $HTTP_SERVER_VARS;
-        if (!preg_match('/^(ht|f)tps?:\/\//', $url)) {
+        if (!preg_match('/^(https?|ftp):\/\//', $url)) {
             $context = 'http' . (@$HTTP_SERVER_VARS['HTTPS'] == 'on' ? 's' : '') . '://' . $HTTP_SERVER_VARS['SERVER_NAME'];
-            if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80) {
+            if ($HTTP_SERVER_VARS['SERVER_PORT'] != 80 &&
+                $HTTP_SERVER_VARS['SERVER_PORT'] != 443) {
                 $context .= ':' . $HTTP_SERVER_VARS['SERVER_PORT'];
             }
-            if ($url[0] != '/') {
+            if ($url{0} != '/') {
                 $context .= dirname($HTTP_SERVER_VARS['PHP_SELF']);
                 $url = $context . '/' . preg_replace('!^\./!', '', $url);
             } else {
