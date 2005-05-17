@@ -331,7 +331,8 @@ class HTTP
         }
         
         // Check for PATH_INFO
-        if (isset($_SERVER['PATH_INFO']) && $_SERVER['PHP_SELF'] != $_SERVER['PATH_INFO']) {
+        if (isset($_SERVER['PATH_INFO']) && strlen($_SERVER['PATH_INFO']) && 
+                $_SERVER['PHP_SELF'] != $_SERVER['PATH_INFO']) {
             $path = dirname(substr($_SERVER['PHP_SELF'], 0, -strlen($_SERVER['PATH_INFO'])));
         } else {
             $path = dirname($_SERVER['PHP_SELF']);
