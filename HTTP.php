@@ -134,11 +134,11 @@ class HTTP
 
         if (count($matches)) {
             asort($matches, SORT_NUMERIC);
-            return $supp[array_pop(array_keys($matches))];
+            return $supp[end($l = array_keys($matches))];
         }
         
         if (isset($_SERVER['REMOTE_HOST'])) {
-            $lang = strtolower(array_pop(explode('.', $_SERVER['REMOTE_HOST'])));
+            $lang = strtolower(end($h = explode('.', $_SERVER['REMOTE_HOST'])));
             if (isset($supp[$lang])) {
                 return $supp[$lang];
             }
