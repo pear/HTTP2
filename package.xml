@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
-<!-- $Revision: 1.38 $ -->
+<!-- $Revision: 1.39 $ -->
 <package version="1.0">
  <name>HTTP</name>
  <summary>Miscellaneous HTTP utilities</summary>
@@ -11,12 +11,12 @@ language negotiation or HTTP redirection.
  </description>
  <license>PHP License</license>
  <maintainers>
-  <maintainter>
+  <maintainer>
    <user>mike</user>
    <name>Michael Wallner</name>
    <email>mike@php.net</email>
    <role>lead</role>
-  </maintainter>
+  </maintainer>
  </maintainers>
  <release>
   <version>1.3.7</version>
