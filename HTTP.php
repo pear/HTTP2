@@ -315,8 +315,13 @@ class HTTP
         $server = $protocol .'://'. $host . (isset($port) ? ':'. $port : '');
         
         if (!strlen($url) || $url{0} == '?' || $url{0} == '#') {
-            $url = isset($_SERVER['REQUEST_URI']) ? 
+            $uri = isset($_SERVER['REQUEST_URI']) ? 
                 $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
+            if ($url && $url{0} == '?' && false !== ($q = strpos($uri, '?'))) {
+                $url = substr($uri, 0, $q) . $url;
+            } else {
+                $url = $uri . $url;
+            }
         }
         
         if ($url{0} == '/') {
