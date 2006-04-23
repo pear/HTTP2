@@ -314,7 +314,7 @@ class HTTP
 
         $server = $protocol .'://'. $host . (isset($port) ? ':'. $port : '');
         
-        if (!strlen($url)) {
+        if (!strlen($url) || $url{0} == '?' || $url{0} == '#') {
             $url = isset($_SERVER['REQUEST_URI']) ? 
                 $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
         }
