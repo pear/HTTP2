@@ -1,4 +1,5 @@
 <?php
+
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
@@ -15,7 +16,7 @@
  * @author      Philippe Jausions <Philippe.Jausions@11abacus.com>
  * @author      Michael Wallner <mike@php.net>
  * @copyright   2002-2008 The Authors
- * @license     BSD, revised
+ * @license     http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version     CVS: $Id$
  * @link        http://pear.php.net/package/HTTP
  */
