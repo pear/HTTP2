@@ -7,18 +7,18 @@
  *
  * PHP versions 4 and 5
  *
- * @category    HTTP
- * @package     HTTP
- * @author      Stig Bakken <ssb@fast.no>
- * @author      Sterling Hughes <sterling@php.net>
- * @author      Tomas V.V.Cox <cox@idecnet.com>
- * @author      Richard Heyes <richard@php.net>
- * @author      Philippe Jausions <Philippe.Jausions@11abacus.com>
- * @author      Michael Wallner <mike@php.net>
- * @copyright   2002-2008 The Authors
- * @license     http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version     CVS: $Id$
- * @link        http://pear.php.net/package/HTTP
+ * @category  HTTP
+ * @package   HTTP
+ * @author    Stig Bakken <ssb@fast.no>
+ * @author    Sterling Hughes <sterling@php.net>
+ * @author    Tomas V.V.Cox <cox@idecnet.com>
+ * @author    Richard Heyes <richard@php.net>
+ * @author    Philippe Jausions <jausions@php.net>
+ * @author    Michael Wallner <mike@php.net>
+ * @copyright 2002-2008 The Authors
+ * @license   http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/HTTP
  */
 
 /**
@@ -28,25 +28,31 @@
  * issueing HTTP HEAD requests, building absolute URIs, firing redirects and
  * negotiating user preferred language.
  *
- * @package     HTTP
- * @category    HTTP
- * @access      public
- * @static
- * @version     $Revision$
+ * @category HTTP
+ * @package  HTTP
+ * @author   Stig Bakken <ssb@fast.no>
+ * @author   Sterling Hughes <sterling@php.net>
+ * @author   Tomas V.V.Cox <cox@idecnet.com>
+ * @author   Richard Heyes <richard@php.net>
+ * @author   Philippe Jausions <jausions@php.net>
+ * @author   Michael Wallner <mike@php.net>
+ * @license  http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @abstract
+ * @version  Release: $Revision$
+ * @link     http://pear.php.net/package/HTTP
  */
 class HTTP
 {
     /**
-     * Date
-     *
-     * Format a RFC compliant GMT date HTTP header.  This function honors the
+     * Formats a RFC compliant GMT date HTTP header.  This function honors the
      * "y2k_compliance" php.ini directive and formats the GMT date corresponding
      * to either RFC850 or RFC822.
      *
+     * @param mixed $time unix timestamp or date (default = current time)
+     *
+     * @return mixed  GMT date string, or false for an invalid $time parameter
+     * @access public
      * @static
-     * @access  public
-     * @return  mixed   GMT date string, or false for an invalid $time parameter
-     * @param   mixed   $time unix timestamp or date (default = current time)
      */
     function Date($time = null)
     {
@@ -63,9 +69,7 @@ class HTTP
     }
 
     /**
-     * Negotiate Language
-     *
-     * Negotiate language with the user's browser through the Accept-Language
+     * Negotiates language with the user's browser through the Accept-Language
      * HTTP header or the user's host address.  Language codes are generally in
      * the form "ll" for a language spoken in only one country, or "ll-CC" for a
      * language spoken in a particular country.  For example, U.S. English is
@@ -89,12 +93,13 @@ class HTTP
      *  $dir = $langs[$neg];
      * </code>
      *
+     * @param array  $supported An associative array of supported languages,
+     *                          whose values must evaluate to true.
+     * @param string $default   The default language to use if none is found.
+     *
+     * @return string  The negotiated language result or the supplied default.
      * @static
-     * @access  public
-     * @return  string  The negotiated language result or the supplied default.
-     * @param   array   $supported An associative array of supported languages,
-     *                  whose values must evaluate to true.
-     * @param   string  $default The default language to use if none is found.
+     * @access public
      */
     function negotiateLanguage($supported, $default = 'en-US')
     {
@@ -142,10 +147,10 @@ class HTTP
     }
 
     /**
-     * Head
-     *
      * Sends a "HEAD" HTTP command to a server and returns the headers
-     * as an associative array. Example output could be:
+     * as an associative array.
+     *
+     * Example output could be:
      * <code>
      *     Array
      *     (
@@ -159,15 +164,15 @@ class HTTP
      *     )
      * </code>
      *
+     * @param string  $url     A valid URL, e.g.: http://pear.php.net/credits.php
+     * @param integer $timeout Timeout in seconds (default = 10)
+     *
+     * @return array  Returns associative array of response headers on success
+     *                or PEAR error on failure.
+     * @static
+     * @access public
      * @see HTTP_Client::head()
      * @see HTTP_Request
-     *
-     * @static
-     * @access  public
-     * @return  mixed   Returns associative array of response headers on success
-     *                  or PEAR error on failure.
-     * @param   string  $url A valid URL, e.g.: http://pear.php.net/credits.php
-     * @param   integer $timeout Timeout in seconds (default = 10)
      */
     function head($url, $timeout = 10)
     {
@@ -204,6 +209,7 @@ class HTTP
             if (($pos = strpos($line, ':')) !== false) {
                 $header = substr($line, 0, $pos);
                 $value  = trim(substr($line, $pos + 1));
+
                 $headers[$header] = $value;
             }
         }
@@ -212,20 +218,20 @@ class HTTP
     }
 
     /**
-     * Redirect
-     *
      * This function redirects the client. This is done by issuing
      * a "Location" header and exiting if wanted.  If you set $rfc2616 to true
      * HTTP will output a hypertext note with the location of the redirect.
      *
-     * @static
-     * @access  public
-     * @return  mixed   Returns true on succes (or exits) or false if headers
+     * @param string $url     URL where the redirect should go to.
+     * @param bool   $exit    Whether to exit immediately after redirection.
+     * @param bool   $rfc2616 Wheter to output a hypertext note where we're
+     *                        redirecting to (Redirecting to
+     *                        <a href="...">...</a>.)
+     *
+     * @return boolean  Returns TRUE on succes (or exits) or FALSE if headers
      *                  have already been sent.
-     * @param   string  $url URL where the redirect should go to.
-     * @param   bool    $exit Whether to exit immediately after redirection.
-     * @param   bool    $rfc2616 Wheter to output a hypertext note where we're
-     *                  redirecting to (Redirecting to <a href="...">...</a>.)
+     * @static
+     * @access public
      */
     function redirect($url, $exit = true, $rfc2616 = false)
     {
@@ -236,8 +242,8 @@ class HTTP
         $url = HTTP::absoluteURI($url);
         header('Location: '. $url);
 
-        if (    $rfc2616 && isset($_SERVER['REQUEST_METHOD']) &&
-                $_SERVER['REQUEST_METHOD'] != 'HEAD') {
+        if ($rfc2616 && isset($_SERVER['REQUEST_METHOD'])
+            && $_SERVER['REQUEST_METHOD'] != 'HEAD') {
             printf('Redirecting to: <a href="%s">%s</a>.', $url, $url);
         }
         if ($exit) {
@@ -247,8 +253,6 @@ class HTTP
     }
 
     /**
-     * Absolute URI
-     *
      * This function returns the absolute URI for the partial URL passed.
      * The current scheme (HTTP/HTTPS), host server, port, current script
      * location are used if necessary to resolve any relative URLs.
@@ -260,20 +264,17 @@ class HTTP
      * particularly useful when redirecting a web browser using relative URIs
      * and to switch from HTTP to HTTPS, or vice-versa, at the same time.
      *
-     * @param  string  $url Absolute or relative URI the redirect should go to.
-     * @param  string  $protocol Protocol to use when redirecting URIs.
-     * @param  integer $port A new port number.
-     * @param  boolean $relativeToScript In the case of a relative URL,
-     *           whether to preserve the URL the way the script was called
-     *           (i.e. with PATH_INFO for instance)
+     * @param string  $url      Absolute or relative URI the redirect should
+     *                          go to.
+     * @param string  $protocol Protocol to use when redirecting URIs.
+     * @param integer $port     A new port number.
      *
      * @return string  The absolute URI.
      * @author Philippe Jausions <Philippe.Jausions@11abacus.com>
      * @static
      * @access public
      */
-    function absoluteURI($url = null, $protocol = null, $port = null,
-                         $relativeToScript = true)
+    function absoluteURI($url = null, $protocol = null, $port = null)
     {
         // filter CR/LF
         $url = str_replace(array("\r", "\n"), ' ', $url);
@@ -337,14 +338,16 @@ class HTTP
         }
 
         // Adjust for PATH_INFO if needed
-        if ($relativeToScript && !empty($_SERVER['PATH_INFO'])) {
+        if (isset($_SERVER['PATH_INFO']) && strlen($_SERVER['PATH_INFO'])) {
             $path = dirname(substr($uriBase, 0,
                                    -strlen($_SERVER['PATH_INFO'])));
-        } elseif (!$relativeToScript && (substr($uriBase, -1) == '/'
-                                         || substr($uriBase, -1) == '\\')) {
-            $path = $uriBase;
         } else {
-            $path = dirname($uriBase);
+            /**
+             * Fixes bug #12672 PHP_SELF ending on / causes incorrect redirects
+             *
+             * @link http://pear.php.net/bugs/12672
+             */
+            $path = dirname($uriBase.'-');
         }
 
         if (substr($path = strtr($path, '\\', '/'), -1) != '/') {
@@ -359,15 +362,16 @@ class HTTP
      *
      * Lazy raising of PEAR_Errors.
      *
+     * @param mixed   $error Error
+     * @param integer $code  Error code
+     *
+     * @return object  PEAR_Error
      * @static
-     * @access  protected
-     * @return  object PEAR_Error
-     * @param   mixed   $error
-     * @param   int     $code
+     * @access protected
      */
     function raiseError($error = null, $code = null)
     {
-        require_once 'PEAR.php';
+        include_once 'PEAR.php';
         return PEAR::raiseError($error, $code);
     }
 }

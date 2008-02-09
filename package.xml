@@ -1,41 +1,75 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
-<!-- $Revision: 1.41 $ -->
-<package version="1.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.7.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
  <name>HTTP</name>
+ <channel>pear.php.net</channel>
  <summary>Miscellaneous HTTP utilities</summary>
- <description>
-The HTTP class is a class with static methods for doing 
+ <description>The HTTP class is a class with static methods for doing
 miscellaneous HTTP related stuff like date formatting,
 language negotiation or HTTP redirection.
+
  </description>
- <license>PHP License</license>
- <maintainers>
-  <maintainer>
-   <user>mike</user>
-   <name>Michael Wallner</name>
-   <email>mike@php.net</email>
-   <role>lead</role>
-  </maintainer>
- </maintainers>
- <release>
-  <version>1.4.1</version>
-  <state>stable</state>
-  <date>2006-00-00</date>
-  <notes>
-<![CDATA[
-* Fixed bug #7130 - HTTP::absoluteUri("?foo") loses path
-]]>
-  </notes>
-  <filelist>
-   <dir name="/">
-    <file role="php">HTTP.php</file>
-   </dir>
-  </filelist>
-  <deps>
- 	 <dep type="pkg" rel="has">PEAR</dep>
- 	 <dep type="ext" rel="has">pcre</dep>
- 	 <dep type="php" rel="ge" version="4.0.6"/>
-  </deps>
- </release>
+ <lead>
+  <name>Michael Wallner</name>
+  <user>mike</user>
+  <email>mike@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Philippe Jausions</name>
+  <user>jausions</user>
+  <email>jausions@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2008-02-09</date>
+ <time>00:41:15</time>
+ <version>
+  <release>1.4.1</release>
+  <api>1.4.1</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+ <notes>* Fixed bug #7130 - HTTP::absoluteUri(&quot;?foo&quot;) loses path
+* Fixed bug #12672 - PHP_SELF ending on / causes incorrect redirects
+* Fixed bug #12571 - Wrong license in package.xml
+* Fixed bug #12759 - DOS linebreaks
+* Added regression tests
+ </notes>
+ <contents>
+  <dir name="/">
+   <file name="HTTP.php" role="php" />
+   <dir name="tests">
+    <file name="absoluteURI.inc" role="test" />
+    <file name="test1a.phpt" role="test" />
+    <file name="test2a.phpt" role="test" />
+    <file name="test3a.phpt" role="test" />
+    <file name="test4a.phpt" role="test" />
+    <file name="test5a.phpt" role="test" />
+    <file name="test6a.phpt" role="test" />
+   </dir> <!-- /tests -->
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.0.6</min>
+   </php>
+   <pearinstaller>
+    <min>1.7.1</min>
+   </pearinstaller>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <extension>
+    <name>pcre</name>
+   </extension>
+  </required>
+ </dependencies>
+ <phprelease />
 </package>

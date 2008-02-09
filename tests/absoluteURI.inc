@@ -37,7 +37,7 @@ $tests = array(
 foreach ($tests as $test) {
     list($page, $protocol, $port) = $test;
 
-    echo sprintf('%-22s', implode('|', $test)).' => '
+    echo sprintf('%-20s', implode('|', $test)).' => '
          .HTTP::absoluteURI($page, $protocol, $port, HTTP_RELATIVETOSCRIPT)
          ."\n";
 }
