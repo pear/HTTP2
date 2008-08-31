@@ -50,7 +50,7 @@ language negotiation or HTTP redirection.
     <file name="test3a.phpt" role="test" />
     <file name="test4a.phpt" role="test" />
     <file name="test5a.phpt" role="test" />
-    <file name="test6a.phpt" role="test" />
+    <file name="test6a.phpt" role="test" /><file name="negotiateLanguage.phpt" role="test"></file><file name="negotiateMimeType.phpt" role="test"></file>
    </dir> <!-- /tests -->
   </dir> <!-- / -->
  </contents>

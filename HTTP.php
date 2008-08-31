@@ -82,12 +82,12 @@ class HTTP
      * <code>
      *  require_once 'HTTP.php';
      *  $langs = array(
-     *      'en'   => 'locales/en',
-     *      'en-US'=> 'locales/en',
-     *      'en-UK'=> 'locales/en',
-     *      'de'   => 'locales/de',
-     *      'de-DE'=> 'locales/de',
-     *      'de-AT'=> 'locales/de',
+     *      'en'    => 'locales/en',
+     *      'en-US' => 'locales/en',
+     *      'en-UK' => 'locales/en',
+     *      'de'    => 'locales/de',
+     *      'de-DE' => 'locales/de',
+     *      'de-AT' => 'locales/de',
      *  );
      *  $neg = HTTP::negotiateLanguage($langs);
      *  $dir = $langs[$neg];
@@ -106,7 +106,7 @@ class HTTP
         $supp = array();
         foreach ($supported as $lang => $isSupported) {
             if ($isSupported) {
-                $supp[strToLower($lang)] = $lang;
+                $supp[strtolower($lang)] = $lang;
             }
         }
 
@@ -114,26 +114,12 @@ class HTTP
             return $default;
         }
 
-        $matches = array();
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $lang) {
-                $lang = array_map('trim', explode(';', $lang));
-                if (isset($lang[1])) {
-                    $l = strtolower($lang[0]);
-                    $q = (float) str_replace('q=', '', $lang[1]);
-                } else {
-                    $l = strtolower($lang[0]);
-                    $q = null;
-                }
-                if (isset($supp[$l])) {
-                    $matches[$l] = isset($q) ? $q : 1000 - count($matches);
-                }
+            $match = HTTP::_matchAccept($_SERVER['HTTP_ACCEPT_LANGUAGE'],
+                                        $supp);
+            if (!is_null($match)) {
+                return $match;
             }
-        }
-
-        if (count($matches)) {
-            asort($matches, SORT_NUMERIC);
-            return $supp[end($l = array_keys($matches))];
         }
 
         if (isset($_SERVER['REMOTE_HOST'])) {
@@ -144,6 +130,131 @@ class HTTP
         }
 
         return $default;
+    }
+
+    /**
+     * Negotiates content type with the user's browser through the Accept
+     * HTTP header.
+     *
+     * Quality factors in the Accept: header are supported, e.g.:
+     *      Accept: application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8
+     *
+     * <code>
+     *  require_once 'HTTP.php';
+     *  $contentType = array(
+     *      'application/xhtml+xml',
+     *      'application/xml',
+     *      'text/html',
+     *      'text/plain',
+     *  );
+     *  $mime = HTTP::negotiateContentType($contentType);
+     * </code>
+     *
+     * @param array  $supported An associative array of supported MIME types.
+     * @param string $default   The default type to use if none match.
+     *
+     * @return string  The negotiated MIME type result or the supplied default.
+     * @static
+     * @access public
+     * @since  1.4.1
+     */
+    function negotiateMimeType($supported, $default)
+    {
+        $supp = array();
+        foreach ($supported as $type) {
+            $supp[strtolower($type)] = $type;
+        }
+
+        if (!count($supp)) {
+            return $default;
+        }
+
+        if (isset($_SERVER['HTTP_ACCEPT'])) {
+            $accepts = HTTP::_sortAccept($_SERVER['HTTP_ACCEPT'], true);
+
+            foreach ($accepts as $type => $q) {
+                if (substr($type, -2) != '/*') {
+                    if (isset($supp[$type])) {
+                        return $supp[$type];
+                    }
+                    continue;
+                }
+                if ($type == '*/*') {
+                    return array_shift($supp);
+                }
+                list($general, $specific) = explode('/', $type);
+                $general .= '/';
+                $len = strlen($general);
+                foreach ($supp as $mime => $t) {
+                    if (strncasecmp($general, $mime, $len) == 0) {
+                        return $t;
+                    }
+                }
+            }
+        }
+
+        return $default;
+    }
+
+    /**
+     * Parses a weighed "Accept" HTTP header and matches it against a list
+     * of supported options
+     *
+     * @param string  $header    The HTTP "Accept" header to parse
+     * @param array   $supported A list of supported values
+     * @param boolean $mime      Whether to consider values as MIME types 
+     *
+     * @return string|NULL  a matched option, or NULL if no match
+     * @access private
+     * @static
+     */
+    function _matchAccept($header, $supported, $mime = false)
+    {
+        $matches = HTTP::_sortAccept($header, $mime);
+        foreach ($matches as $key => $q) {
+            if (isset($supported[$key])) {
+                return $supported[$key];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Parses and sorts a weighed "Accept" HTTP header
+     *
+     * @param string  $header The HTTP "Accept" header to parse
+     * @param boolean $mime   Whether to consider values as MIME types 
+     *
+     * @return array  a sorted list of "accept" options
+     * @access private
+     * @static
+     */
+    function _sortAccept($header, $mime = false)
+    {
+        $matches = array();
+        foreach (explode(',', $header) as $option) {
+            $option = array_map('trim', explode(';', $option));
+
+            $l = strtolower($option[0]);
+            if (isset($option[1])) {
+                $q = (float) str_replace('q=', '', $option[1]);
+            } else {
+                $q = null;
+                if ($mime) {
+                    // Assign default low weight for generic MIME types
+                    if ($l == '*/*') {
+                        $q = 0.01;
+                    } elseif (substr($l, -2) == '/*') {
+                        $q = 0.02;
+                    }
+                }
+            }
+            // Unweighted values, get high weight by their position in the
+            // list 
+            $matches[$l] = isset($q) ? $q : 1000 - count($matches);
+        }
+        arsort($matches, SORT_NUMERIC);
+        return $matches;
     }
 
     /**
@@ -244,7 +355,16 @@ class HTTP
 
         if ($rfc2616 && isset($_SERVER['REQUEST_METHOD'])
             && $_SERVER['REQUEST_METHOD'] != 'HEAD') {
-            printf('Redirecting to: <a href="%s">%s</a>.', $url, $url);
+            echo '
+<p>Redirecting to: <a href="'.$url.'">'.htmlspecialchars($url).'</a>.</p>
+<script type="text/javascript">
+//<![CDATA[
+if (location.replace == null) {
+    location.replace = location.assign;
+}
+location.replace("'.str_replace('"', '\\"', $url).'");
+// ]]>
+</script>';
         }
         if ($exit) {
             exit;
