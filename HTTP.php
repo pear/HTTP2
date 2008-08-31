@@ -404,7 +404,8 @@ class HTTP
         if ($rfc2616 && isset($_SERVER['REQUEST_METHOD'])
             && $_SERVER['REQUEST_METHOD'] != 'HEAD') {
             echo '
-<p>Redirecting to: <a href="'.$url.'">'.htmlspecialchars($url).'</a>.</p>
+<p>Redirecting to: <a href="'.str_replace('"', '%22', $url).'">'
+                 .htmlspecialchars($url).'</a>.</p>
 <script type="text/javascript">
 //<![CDATA[
 if (location.replace == null) {
