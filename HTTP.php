@@ -133,6 +133,53 @@ class HTTP
     }
 
     /**
+     * Negotiates charset with the user's browser through the Accept-Charset
+     * HTTP header.
+     *
+     * Quality factors in the Accept-Charset: header are supported, e.g.:
+     *      Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
+     *
+     * <code>
+     *  require_once 'HTTP.php';
+     *  $charsets = array(
+     *      'UTF-8',
+     *      'ISO-8859-1',
+     *  );
+     *  $charset = HTTP::negotiateCharset($charsets);
+     * </code>
+     *
+     * @param array  $supported An array of supported charsets
+     * @param string $default   The default charset to use if none is found.
+     *
+     * @return string  The negotiated language result or the supplied default.
+     * @static
+     * @author Philippe Jausions <jausions@php.net>
+     * @access public
+     * @since  1.4.1
+     */
+    function negotiateCharset($supported, $default = 'ISO-8859-1')
+    {
+        $supp = array();
+        foreach ($supported as $charset) {
+            $supp[strtolower($charset)] = $charset;
+        }
+
+        if (!count($supp)) {
+            return $default;
+        }
+
+        if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
+            $match = HTTP::_matchAccept($_SERVER['HTTP_ACCEPT_CHARSET'],
+                                        $supp);
+            if (!is_null($match)) {
+                return $match;
+            }
+        }
+
+        return $default;
+    }
+
+    /**
      * Negotiates content type with the user's browser through the Accept
      * HTTP header.
      *
@@ -155,6 +202,7 @@ class HTTP
      *
      * @return string  The negotiated MIME type result or the supplied default.
      * @static
+     * @author Philippe Jausions <jausions@php.net>
      * @access public
      * @since  1.4.1
      */
@@ -170,7 +218,7 @@ class HTTP
         }
 
         if (isset($_SERVER['HTTP_ACCEPT'])) {
-            $accepts = HTTP::_sortAccept($_SERVER['HTTP_ACCEPT'], true);
+            $accepts = HTTP::_sortAccept($_SERVER['HTTP_ACCEPT']);
 
             foreach ($accepts as $type => $q) {
                 if (substr($type, -2) != '/*') {
@@ -202,19 +250,22 @@ class HTTP
      *
      * @param string  $header    The HTTP "Accept" header to parse
      * @param array   $supported A list of supported values
-     * @param boolean $mime      Whether to consider values as MIME types 
      *
      * @return string|NULL  a matched option, or NULL if no match
      * @access private
      * @static
      */
-    function _matchAccept($header, $supported, $mime = false)
+    function _matchAccept($header, $supported)
     {
-        $matches = HTTP::_sortAccept($header, $mime);
+        $matches = HTTP::_sortAccept($header);
         foreach ($matches as $key => $q) {
             if (isset($supported[$key])) {
                 return $supported[$key];
             }
+        }
+        // If any (i.e. "*") is acceptable, return the first supported format 
+        if (isset($matches['*'])) {
+            return array_shift($supported);
         }
         return null;
     }
@@ -223,13 +274,12 @@ class HTTP
      * Parses and sorts a weighed "Accept" HTTP header
      *
      * @param string  $header The HTTP "Accept" header to parse
-     * @param boolean $mime   Whether to consider values as MIME types 
      *
      * @return array  a sorted list of "accept" options
      * @access private
      * @static
      */
-    function _sortAccept($header, $mime = false)
+    function _sortAccept($header)
     {
         $matches = array();
         foreach (explode(',', $header) as $option) {
@@ -240,13 +290,11 @@ class HTTP
                 $q = (float) str_replace('q=', '', $option[1]);
             } else {
                 $q = null;
-                if ($mime) {
-                    // Assign default low weight for generic MIME types
-                    if ($l == '*/*') {
-                        $q = 0.01;
-                    } elseif (substr($l, -2) == '/*') {
-                        $q = 0.02;
-                    }
+                // Assign default low weight for generic values
+                if ($l == '*/*') {
+                    $q = 0.01;
+                } elseif (substr($l, -1) == '*') {
+                    $q = 0.02;
                 }
             }
             // Unweighted values, get high weight by their position in the
