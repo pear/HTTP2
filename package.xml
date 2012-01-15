@@ -19,14 +19,14 @@ language negotiation or HTTP redirection.</description>
   <active>yes</active>
  </lead>
  <date>2012-01-16</date>
- <time>08:49:13</time>
+ <time>08:55:19</time>
  <version>
   <release>0.1.0</release>
   <api>0.1.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
@@ -49,7 +49,7 @@ Make API non static
    <file baseinstalldir="/" md5sum="9776763b4f9d8e4f9b06b4bf5db46dd2" name="/tests/test5a.phpt" role="data" />
    <file baseinstalldir="/" md5sum="2a46d2f6421ae83304a47cb8893dbda5" name="/tests/test6a.phpt" role="data" />
    <file baseinstalldir="/" md5sum="4d1a5edebb6d0278d8a7eb6450bbc3ff" name="build.xml" role="data" />
-   <file baseinstalldir="/" md5sum="c6097d16e897dece16534139f11c2d61" name="HTTP2.php" role="php" />
+   <file baseinstalldir="/" md5sum="b4c05f0e7cd733ecf1b5d4c0650bd3c5" name="HTTP2.php" role="php" />
    <file baseinstalldir="/" md5sum="cd6a3937d363e0a0ca538cadfde7b9bf" name="LICENSE" role="data" />
    <file baseinstalldir="/" md5sum="a493bce55f6aa1476d12fa0c707a95e2" name="phpunit.xml" role="data" />
    <file baseinstalldir="/" md5sum="f006ef26c9f7d6dd88cabcb18a774b86" name="README" role="data" />
@@ -80,8 +80,8 @@ Make API non static
     <api>0.1.0</api>
    </version>
    <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>beta</release>
+    <api>beta</api>
    </stability>
    <date>2012-01-16</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
