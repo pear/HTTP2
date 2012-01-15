@@ -7,15 +7,15 @@
  * different $_ENV settings.
  *
  * @category HTTP
- * @package  HTTP
+ * @package  HTTP2
  * @author   Philippe Jausions <jausions@php.net>
  * @version  $Id$
  */
-require_once 'HTTP.php';
+require_once 'HTTP2.php';
 
-// For 4th argument of HTTP::absoluteURI() method
-if (!defined('HTTP_RELATIVETOSCRIPT')) {
-    define('HTTP_RELATIVETOSCRIPT', true);
+// For 4th argument of HTTP2::absoluteURI() method
+if (!defined('HTTP2_RELATIVETOSCRIPT')) {
+    define('HTTP2_RELATIVETOSCRIPT', true);
 }
 
 $tests = array(
@@ -38,7 +38,7 @@ foreach ($tests as $test) {
     list($page, $protocol, $port) = $test;
 
     echo sprintf('%-20s', implode('|', $test)).' => '
-         .HTTP::absoluteURI($page, $protocol, $port, HTTP_RELATIVETOSCRIPT)
+         .HTTP2::absoluteURI($page, $protocol, $port, HTTP2_RELATIVETOSCRIPT)
          ."\n";
 }
 

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-http://pear.php.net/dtd/tasks-1.0.xsd
-http://pear.php.net/dtd/package-2.0
-http://pear.php.net/dtd/package-2.0.xsd">
- <name>HTTP</name>
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>HTTP2</name>
  <channel>pear.php.net</channel>
  <summary>Miscellaneous HTTP utilities</summary>
  <description>The HTTP class is a class with static methods for doing
 miscellaneous HTTP related stuff like date formatting,
-language negotiation or HTTP redirection.
-
- </description>
+language negotiation or HTTP redirection.</description>
  <lead>
   <name>Michael Wallner</name>
   <user>mike</user>
@@ -23,18 +18,19 @@ language negotiation or HTTP redirection.
   <email>jausions@php.net</email>
   <active>yes</active>
  </lead>
- <date>2008-08-31</date>
- <time>16:07:15</time>
+ <date>2012-01-16</date>
+ <time>08:32:47</time>
  <version>
-  <release>1.4.1</release>
-  <api>1.4.1</api>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>* Fixed bug #7130 - HTTP::absoluteUri(&quot;?foo&quot;) loses path
+ <notes>
+* Fixed bug #7130 - HTTP2::absoluteUri(&quot;?foo&quot;) loses path
 * Fixed bug #12672 - PHP_SELF ending on / causes incorrect redirects
 * Fixed bug #12571 - Wrong license in package.xml
 * Fixed bug #12759 - DOS linebreaks
@@ -45,27 +41,27 @@ language negotiation or HTTP redirection.
 * Added failover JavaScript for redirect()
  </notes>
  <contents>
-  <dir name="/">
-   <file name="HTTP.php" role="php" />
-   <dir name="tests">
-    <file name="absoluteURI.inc" role="test" />
-    <file name="test1a.phpt" role="test" />
-    <file name="test2a.phpt" role="test" />
-    <file name="test3a.phpt" role="test" />
-    <file name="test4a.phpt" role="test" />
-    <file name="test5a.phpt" role="test" />
-    <file name="test6a.phpt" role="test" />
-    <file name="negotiateLanguage.phpt" role="test" />
-    <file name="negotiateMimeType.phpt" role="test" />
-    <file name="negotiateCharset.phpt" role="test" />
-    <file name="negotiateCharset2.phpt" role="test" />
-   </dir> <!-- /tests -->
-  </dir> <!-- / -->
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="4d059ea386607aceb0336e67a86ca558" name="/tests/absoluteURI.inc" role="data" />
+   <file baseinstalldir="/" md5sum="0db97266e5f5f294f2a15c6b36d72813" name="/tests/negotiateCharset.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="ec15a9cc3fd02bf6467fb79a2cbabaef" name="/tests/negotiateCharset2.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="5b7f17cf506e13ed2c877ffdc91ed3d3" name="/tests/negotiateLanguage.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="7ba93e6f666001c3a660eca2334d12cb" name="/tests/negotiateMimeType.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="892ff27a8c6bc88b4c960fbaa435e9c4" name="/tests/test1a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="b49e8a91bca63000f1f0529264d23509" name="/tests/test2a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="25fc92b0202bbce0dfb83541b95b0af4" name="/tests/test3a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="7a3416157e875847f4806a63af709d12" name="/tests/test4a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="2999ad352f432b280f630794bddc224d" name="/tests/test5a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="a5f75a6adfaf80dbfa53e46f0438fa23" name="/tests/test6a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="265297b2a37a082054987b4357177b9c" name="HTTP2.php" role="php" />
+   <file baseinstalldir="/" md5sum="cd6a3937d363e0a0ca538cadfde7b9bf" name="LICENSE" role="data" />
+   <file baseinstalldir="/" md5sum="f006ef26c9f7d6dd88cabcb18a774b86" name="README" role="data" />
+  </dir>
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>4.0.6</min>
+    <min>5.0.0</min>
    </php>
    <pearinstaller>
     <min>1.7.1</min>
@@ -80,4 +76,29 @@ language negotiation or HTTP redirection.
   </required>
  </dependencies>
  <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-01-16</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+* Fixed bug #7130 - HTTP2::absoluteUri(&quot;?foo&quot;) loses path
+* Fixed bug #12672 - PHP_SELF ending on / causes incorrect redirects
+* Fixed bug #12571 - Wrong license in package.xml
+* Fixed bug #12759 - DOS linebreaks
+* Fixed req #9148 - Added negotiateCharset() method
+* Fixed req #11060 - Added negotiateMimeType() method
+* Added regression tests
+* Bump to package.xml v2.0
+* Added failover JavaScript for redirect()
+   </notes>
+  </release>
+ </changelog>
 </package>

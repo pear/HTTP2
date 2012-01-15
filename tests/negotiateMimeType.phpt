@@ -18,12 +18,12 @@ HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,text/*;q=0.7,*
  * PHP version 4 and 5
  *
  * @category HTTP
- * @package  HTTP
+ * @package  HTTP2
  * @author   Philippe Jausions <jausions@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @link     http://pear.php.net/package/HTTP
+ * @link     http://pear.php.net/package/HTTP2
  */
-require_once  'HTTP.php';
+require_once  'HTTP2.php';
 
 // The --ENV-- Accept sets the following order
 // (preferred types first)
@@ -86,7 +86,7 @@ $sets = array(
     ),
 );
 foreach ($sets as $i => $supported) {
-    echo $i.' => '.HTTP::negotiateMimeType($supported, 'application/octet-stream')
+    echo $i.' => '.HTTP2::negotiateMimeType($supported, 'application/octet-stream')
          ."\n";
 }
 

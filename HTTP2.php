@@ -3,12 +3,12 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * HTTP
+ * HTTP2
  *
  * PHP versions 4 and 5
  *
  * @category  HTTP
- * @package   HTTP
+ * @package   HTTP2
  * @author    Stig Bakken <ssb@fast.no>
  * @author    Sterling Hughes <sterling@php.net>
  * @author    Tomas V.V.Cox <cox@idecnet.com>
@@ -18,18 +18,18 @@
  * @copyright 2002-2008 The Authors
  * @license   http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version   CVS: $Id$
- * @link      http://pear.php.net/package/HTTP
+ * @link      http://pear.php.net/package/HTTP2
  */
 
 /**
  * Miscellaneous HTTP Utilities
  *
- * PEAR::HTTP provides static shorthand methods for generating HTTP dates,
+ * PEAR::HTTP2 provides static shorthand methods for generating HTTP dates,
  * issueing HTTP HEAD requests, building absolute URIs, firing redirects and
  * negotiating user preferred language.
  *
  * @category HTTP
- * @package  HTTP
+ * @package  HTTP2
  * @author   Stig Bakken <ssb@fast.no>
  * @author   Sterling Hughes <sterling@php.net>
  * @author   Tomas V.V.Cox <cox@idecnet.com>
@@ -39,9 +39,9 @@
  * @license  http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @abstract
  * @version  Release: $Revision$
- * @link     http://pear.php.net/package/HTTP
+ * @link     http://pear.php.net/package/HTTP2
  */
-class HTTP
+class HTTP2
 {
     /**
      * Formats a RFC compliant GMT date HTTP header.  This function honors the
@@ -80,7 +80,7 @@ class HTTP
      *      Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
      *
      * <code>
-     *  require_once 'HTTP.php';
+     *  require_once 'HTTP2.php';
      *  $langs = array(
      *      'en'    => 'locales/en',
      *      'en-US' => 'locales/en',
@@ -89,7 +89,7 @@ class HTTP
      *      'de-DE' => 'locales/de',
      *      'de-AT' => 'locales/de',
      *  );
-     *  $neg = HTTP::negotiateLanguage($langs);
+     *  $neg = HTTP2::negotiateLanguage($langs);
      *  $dir = $langs[$neg];
      * </code>
      *
@@ -115,7 +115,7 @@ class HTTP
         }
 
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $match = HTTP::_matchAccept($_SERVER['HTTP_ACCEPT_LANGUAGE'],
+            $match = HTTP2::_matchAccept($_SERVER['HTTP_ACCEPT_LANGUAGE'],
                                         $supp);
             if (!is_null($match)) {
                 return $match;
@@ -140,12 +140,12 @@ class HTTP
      *      Accept-Language: en-UK;q=0.7, en-US;q=0.6, no, dk;q=0.8
      *
      * <code>
-     *  require_once 'HTTP.php';
+     *  require_once 'HTTP2.php';
      *  $charsets = array(
      *      'UTF-8',
      *      'ISO-8859-1',
      *  );
-     *  $charset = HTTP::negotiateCharset($charsets);
+     *  $charset = HTTP2::negotiateCharset($charsets);
      * </code>
      *
      * @param array  $supported An array of supported charsets
@@ -169,7 +169,7 @@ class HTTP
         }
 
         if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
-            $match = HTTP::_matchAccept($_SERVER['HTTP_ACCEPT_CHARSET'],
+            $match = HTTP2::_matchAccept($_SERVER['HTTP_ACCEPT_CHARSET'],
                                         $supp);
             if (!is_null($match)) {
                 return $match;
@@ -187,14 +187,14 @@ class HTTP
      *      Accept: application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8
      *
      * <code>
-     *  require_once 'HTTP.php';
+     *  require_once 'HTTP2.php';
      *  $contentType = array(
      *      'application/xhtml+xml',
      *      'application/xml',
      *      'text/html',
      *      'text/plain',
      *  );
-     *  $mime = HTTP::negotiateContentType($contentType);
+     *  $mime = HTTP2::negotiateContentType($contentType);
      * </code>
      *
      * @param array  $supported An associative array of supported MIME types.
@@ -218,7 +218,7 @@ class HTTP
         }
 
         if (isset($_SERVER['HTTP_ACCEPT'])) {
-            $accepts = HTTP::_sortAccept($_SERVER['HTTP_ACCEPT']);
+            $accepts = HTTP2::_sortAccept($_SERVER['HTTP_ACCEPT']);
 
             foreach ($accepts as $type => $q) {
                 if (substr($type, -2) != '/*') {
@@ -257,13 +257,13 @@ class HTTP
      */
     function _matchAccept($header, $supported)
     {
-        $matches = HTTP::_sortAccept($header);
+        $matches = HTTP2::_sortAccept($header);
         foreach ($matches as $key => $q) {
             if (isset($supported[$key])) {
                 return $supported[$key];
             }
         }
-        // If any (i.e. "*") is acceptable, return the first supported format 
+        // If any (i.e. "*") is acceptable, return the first supported format
         if (isset($matches['*'])) {
             return array_shift($supported);
         }
@@ -298,7 +298,7 @@ class HTTP
                 }
             }
             // Unweighted values, get high weight by their position in the
-            // list 
+            // list
             $matches[$l] = isset($q) ? $q : 1000 - count($matches);
         }
         arsort($matches, SORT_NUMERIC);
@@ -337,15 +337,15 @@ class HTTP
     {
         $p = parse_url($url);
         if (!isset($p['scheme'])) {
-            $p = parse_url(HTTP::absoluteURI($url));
+            $p = parse_url(HTTP2::absoluteURI($url));
         } elseif ($p['scheme'] != 'http') {
-            return HTTP::raiseError('Unsupported protocol: '. $p['scheme']);
+            return HTTP2::raiseError('Unsupported protocol: '. $p['scheme']);
         }
 
         $port = isset($p['port']) ? $p['port'] : 80;
 
         if (!$fp = @fsockopen($p['host'], $port, $eno, $estr, $timeout)) {
-            return HTTP::raiseError("Connection error: $estr ($eno)");
+            return HTTP2::raiseError("Connection error: $estr ($eno)");
         }
 
         $path  = !empty($p['path']) ? $p['path'] : '/';
@@ -398,7 +398,7 @@ class HTTP
             return false;
         }
 
-        $url = HTTP::absoluteURI($url);
+        $url = HTTP2::absoluteURI($url);
         header('Location: '. $url);
 
         if ($rfc2616 && isset($_SERVER['REQUEST_METHOD'])

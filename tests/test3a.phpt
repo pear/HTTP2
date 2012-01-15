@@ -20,10 +20,10 @@ SCRIPT_NAME=/subdir/test.php
  * PHP version 4 and 5
  *
  * @category HTTP
- * @package  HTTP
+ * @package  HTTP2
  * @author   Philippe Jausions <jausions@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @link     http://pear.php.net/package/HTTP
+ * @link     http://pear.php.net/package/HTTP2
  */
 require 'absoluteURI.inc';
 
