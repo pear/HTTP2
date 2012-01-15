@@ -15,7 +15,7 @@ HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,text/*;q=0.7,*
 /**
  * This test checks for MIME type negotiation
  *
- * PHP version 4 and 5
+ * PHP version 5
  *
  * @category HTTP
  * @package  HTTP2

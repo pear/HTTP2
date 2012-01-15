@@ -15,7 +15,7 @@ HTTP_ACCEPT_LANGUAGE=es-ES;q=0.7, es; q=0.6 ,fr; q=1.0, en; q=0.5,dk , fr-CH
 /**
  * This test checks for language negotiation
  *
- * PHP version 4 and 5
+ * PHP version 5
  *
  * @category HTTP
  * @package  HTTP2

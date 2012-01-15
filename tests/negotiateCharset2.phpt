@@ -15,7 +15,7 @@ HTTP_ACCEPT_CHARSET=ISO-8859-1, Big5;q=0.6,utf-8;q=0.7
 /**
  * This test checks for charset negotiation
  *
- * PHP version 4 and 5
+ * PHP version 5
  *
  * @category HTTP
  * @package  HTTP2

@@ -5,7 +5,7 @@
 /**
  * HTTP2
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * @category  HTTP
  * @package   HTTP2

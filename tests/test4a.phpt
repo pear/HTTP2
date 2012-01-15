@@ -18,7 +18,7 @@ SCRIPT_NAME=/subdir/test.php
  *
  * Relative URLs are resolved to the current script
  *
- * PHP version 4 and 5
+ * PHP version 5
  *
  * @category HTTP
  * @package  HTTP2

@@ -14,7 +14,7 @@ SCRIPT_NAME=/subdir/test.php
 /**
  * This test checks that absoluteURI() still works with HTTP / HTTPS
  *
- * PHP version 4 and 5
+ * PHP version 5
  *
  * @category HTTP
  * @package  HTTP2
