@@ -54,7 +54,7 @@ class HTTP2
      *
      * @return mixed  GMT date string, or false for an invalid $time parameter
      */
-    public function Date($time = null)
+    public function date($time = null)
     {
         if (!isset($time)) {
             $time = time();
@@ -114,8 +114,10 @@ class HTTP2
         }
 
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $match = $this->_matchAccept($_SERVER['HTTP_ACCEPT_LANGUAGE'],
-                                        $supp);
+            $match = $this->matchAccept(
+                $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+                $supp
+            );
             if (!is_null($match)) {
                 return $match;
             }
@@ -166,8 +168,11 @@ class HTTP2
         }
 
         if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
-            $match = $this->_matchAccept($_SERVER['HTTP_ACCEPT_CHARSET'],
-                                        $supp);
+            $match = $this->matchAccept(
+                $_SERVER['HTTP_ACCEPT_CHARSET'],
+                $supp
+            );
+
             if (!is_null($match)) {
                 return $match;
             }
@@ -213,7 +218,7 @@ class HTTP2
         }
 
         if (isset($_SERVER['HTTP_ACCEPT'])) {
-            $accepts = $this->_sortAccept($_SERVER['HTTP_ACCEPT']);
+            $accepts = $this->sortAccept($_SERVER['HTTP_ACCEPT']);
 
             foreach ($accepts as $type => $q) {
                 if (substr($type, -2) != '/*') {
@@ -243,12 +248,12 @@ class HTTP2
      * Parses a weighed "Accept" HTTP header and matches it against a list
      * of supported options
      *
-     * @param string  $header    The HTTP "Accept" header to parse
-     * @param array   $supported A list of supported values
+     * @param string $header    The HTTP "Accept" header to parse
+     * @param array  $supported A list of supported values
      *
      * @return string|NULL  a matched option, or NULL if no match
      */
-    protected function _matchAccept($header, $supported)
+    protected function matchAccept($header, $supported)
     {
         $matches = $this->sortAccept($header);
         foreach ($matches as $key => $q) {
@@ -266,11 +271,11 @@ class HTTP2
     /**
      * Parses and sorts a weighed "Accept" HTTP header
      *
-     * @param string  $header The HTTP "Accept" header to parse
+     * @param string $header The HTTP "Accept" header to parse
      *
      * @return array  a sorted list of "accept" options
      */
-    protected function _sortAccept($header)
+    protected function sortAccept($header)
     {
         $matches = array();
         foreach (explode(',', $header) as $option) {
@@ -330,7 +335,9 @@ class HTTP2
         if (!isset($p['scheme'])) {
             $p = parse_url($this->absoluteURI($url));
         } elseif ($p['scheme'] != 'http') {
-            throw new InvalidArgumentException('Unsupported protocol: '. $p['scheme']);
+            throw new InvalidArgumentException(
+                'Unsupported protocol: '. $p['scheme']
+            );
         }
 
         $port = isset($p['port']) ? $p['port'] : 80;
@@ -391,7 +398,8 @@ class HTTP2
         header('Location: '. $url);
 
         if ($rfc2616 && isset($_SERVER['REQUEST_METHOD'])
-            && $_SERVER['REQUEST_METHOD'] != 'HEAD') {
+            && $_SERVER['REQUEST_METHOD'] != 'HEAD'
+        ) {
             echo '
 <p>Redirecting to: <a href="'.str_replace('"', '%22', $url).'">'
                  .htmlspecialchars($url).'</a>.</p>
@@ -444,8 +452,11 @@ location.replace("'.str_replace('"', '\\"', $url).'");
                 $url = $protocol .':'. end($array = explode(':', $url, 2));
             }
             if (!empty($port)) {
-                $url = preg_replace('!^(([a-z0-9]+)://[^/:]+)(:[\d]+)?!i',
-                                    '\1:'. $port, $url);
+                $url = preg_replace(
+                    '!^(([a-z0-9]+)://[^/:]+)(:[\d]+)?!i',
+                    '\1:'. $port,
+                    $url
+                );
             }
             return $url;
         }
@@ -464,7 +475,10 @@ location.replace("'.str_replace('"', '\\"', $url).'");
                 $protocol = 'http';
             }
             if (!isset($port) || $port != intval($port)) {
-                $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+                $port = 80;
+                if (isset($_SERVER['SERVER_PORT'])) {
+                    $port = $_SERVER['SERVER_PORT'];
+                }
             }
         }
 
@@ -495,8 +509,7 @@ location.replace("'.str_replace('"', '\\"', $url).'");
 
         // Adjust for PATH_INFO if needed
         if (isset($_SERVER['PATH_INFO']) && strlen($_SERVER['PATH_INFO'])) {
-            $path = dirname(substr($uriBase, 0,
-                                   -strlen($_SERVER['PATH_INFO'])));
+            $path = dirname(substr($uriBase, 0, -strlen($_SERVER['PATH_INFO'])));
         } else {
             /**
              * Fixes bug #12672 PHP_SELF ending on / causes incorrect redirects
