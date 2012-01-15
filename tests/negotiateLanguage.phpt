@@ -66,8 +66,9 @@ $sets = array(
     7 => array(
     ),
 );
+$http = new HTTP2();
 foreach ($sets as $i => $languages) {
-    echo $i.' => '.HTTP2::negotiateLanguage($languages, 'de')."\n";
+    echo $i.' => '. $http->negotiateLanguage($languages, 'de')."\n";
 }
 
 ?>

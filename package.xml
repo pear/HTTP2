@@ -19,7 +19,7 @@ language negotiation or HTTP redirection.</description>
   <active>yes</active>
  </lead>
  <date>2012-01-16</date>
- <time>08:32:47</time>
+ <time>08:49:13</time>
  <version>
   <release>0.1.0</release>
   <api>0.1.0</api>
@@ -30,31 +30,28 @@ language negotiation or HTTP redirection.</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-* Fixed bug #7130 - HTTP2::absoluteUri(&quot;?foo&quot;) loses path
-* Fixed bug #12672 - PHP_SELF ending on / causes incorrect redirects
-* Fixed bug #12571 - Wrong license in package.xml
-* Fixed bug #12759 - DOS linebreaks
-* Fixed req #9148 - Added negotiateCharset() method
-* Fixed req #11060 - Added negotiateMimeType() method
-* Added regression tests
-* Bump to package.xml v2.0
-* Added failover JavaScript for redirect()
+Fork from HTTP
+PHP5-ify
+Make API non static
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="/" md5sum="4d059ea386607aceb0336e67a86ca558" name="/tests/absoluteURI.inc" role="data" />
-   <file baseinstalldir="/" md5sum="0db97266e5f5f294f2a15c6b36d72813" name="/tests/negotiateCharset.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="ec15a9cc3fd02bf6467fb79a2cbabaef" name="/tests/negotiateCharset2.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="5b7f17cf506e13ed2c877ffdc91ed3d3" name="/tests/negotiateLanguage.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="7ba93e6f666001c3a660eca2334d12cb" name="/tests/negotiateMimeType.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="892ff27a8c6bc88b4c960fbaa435e9c4" name="/tests/test1a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="b49e8a91bca63000f1f0529264d23509" name="/tests/test2a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="25fc92b0202bbce0dfb83541b95b0af4" name="/tests/test3a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="7a3416157e875847f4806a63af709d12" name="/tests/test4a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="2999ad352f432b280f630794bddc224d" name="/tests/test5a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="a5f75a6adfaf80dbfa53e46f0438fa23" name="/tests/test6a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="265297b2a37a082054987b4357177b9c" name="HTTP2.php" role="php" />
+   <file baseinstalldir="/" md5sum="a34a19790a8831b38419313c9c10dfda" name="/HTTP2/Exception.php" role="php" />
+   <file baseinstalldir="/" md5sum="6b330e9bba20b1dcef8377079ead6081" name="/tests/absoluteURI.inc" role="data" />
+   <file baseinstalldir="/" md5sum="838e1ec4a549a105bda7cb3708e17bca" name="/tests/negotiateCharset.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="7bed1d59960f30ad959abc59b62a6787" name="/tests/negotiateCharset2.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="a8fed2e334ab0eff115c2d3a047b4893" name="/tests/negotiateLanguage.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="93bb4a04a190cb7815af8e52f83cf91b" name="/tests/negotiateMimeType.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="dfe5128e00b9c5b91afa186bc2989757" name="/tests/test1a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="df84a961cad11792302ea7facb70eff0" name="/tests/test2a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="96b47dc38996a5970b016e5b555eed6e" name="/tests/test3a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="cb88ce1aae8e8b662acb27cfb2b6f3b2" name="/tests/test4a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="9776763b4f9d8e4f9b06b4bf5db46dd2" name="/tests/test5a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="2a46d2f6421ae83304a47cb8893dbda5" name="/tests/test6a.phpt" role="data" />
+   <file baseinstalldir="/" md5sum="4d1a5edebb6d0278d8a7eb6450bbc3ff" name="build.xml" role="data" />
+   <file baseinstalldir="/" md5sum="c6097d16e897dece16534139f11c2d61" name="HTTP2.php" role="php" />
    <file baseinstalldir="/" md5sum="cd6a3937d363e0a0ca538cadfde7b9bf" name="LICENSE" role="data" />
+   <file baseinstalldir="/" md5sum="a493bce55f6aa1476d12fa0c707a95e2" name="phpunit.xml" role="data" />
    <file baseinstalldir="/" md5sum="f006ef26c9f7d6dd88cabcb18a774b86" name="README" role="data" />
   </dir>
  </contents>
@@ -89,15 +86,9 @@ language negotiation or HTTP redirection.</description>
    <date>2012-01-16</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
    <notes>
-* Fixed bug #7130 - HTTP2::absoluteUri(&quot;?foo&quot;) loses path
-* Fixed bug #12672 - PHP_SELF ending on / causes incorrect redirects
-* Fixed bug #12571 - Wrong license in package.xml
-* Fixed bug #12759 - DOS linebreaks
-* Fixed req #9148 - Added negotiateCharset() method
-* Fixed req #11060 - Added negotiateMimeType() method
-* Added regression tests
-* Bump to package.xml v2.0
-* Added failover JavaScript for redirect()
+Fork from HTTP
+PHP5-ify
+Make API non static
    </notes>
   </release>
  </changelog>

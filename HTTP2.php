@@ -21,10 +21,12 @@
  * @link      http://pear.php.net/package/HTTP2
  */
 
+require_once 'HTTP2/Exception.php';
+
 /**
  * Miscellaneous HTTP Utilities
  *
- * PEAR::HTTP2 provides static shorthand methods for generating HTTP dates,
+ * PEAR::HTTP2 provides shorthand methods for generating HTTP dates,
  * issueing HTTP HEAD requests, building absolute URIs, firing redirects and
  * negotiating user preferred language.
  *
@@ -51,10 +53,8 @@ class HTTP2
      * @param mixed $time unix timestamp or date (default = current time)
      *
      * @return mixed  GMT date string, or false for an invalid $time parameter
-     * @access public
-     * @static
      */
-    function Date($time = null)
+    public function Date($time = null)
     {
         if (!isset($time)) {
             $time = time();
@@ -81,6 +81,7 @@ class HTTP2
      *
      * <code>
      *  require_once 'HTTP2.php';
+     *  $http = new HTTP2();
      *  $langs = array(
      *      'en'    => 'locales/en',
      *      'en-US' => 'locales/en',
@@ -89,7 +90,7 @@ class HTTP2
      *      'de-DE' => 'locales/de',
      *      'de-AT' => 'locales/de',
      *  );
-     *  $neg = HTTP2::negotiateLanguage($langs);
+     *  $neg = $http->negotiateLanguage($langs);
      *  $dir = $langs[$neg];
      * </code>
      *
@@ -98,10 +99,8 @@ class HTTP2
      * @param string $default   The default language to use if none is found.
      *
      * @return string  The negotiated language result or the supplied default.
-     * @static
-     * @access public
      */
-    function negotiateLanguage($supported, $default = 'en-US')
+    public function negotiateLanguage($supported, $default = 'en-US')
     {
         $supp = array();
         foreach ($supported as $lang => $isSupported) {
@@ -115,7 +114,7 @@ class HTTP2
         }
 
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $match = HTTP2::_matchAccept($_SERVER['HTTP_ACCEPT_LANGUAGE'],
+            $match = $this->_matchAccept($_SERVER['HTTP_ACCEPT_LANGUAGE'],
                                         $supp);
             if (!is_null($match)) {
                 return $match;
@@ -141,23 +140,21 @@ class HTTP2
      *
      * <code>
      *  require_once 'HTTP2.php';
+     *  $http = new HTTP2();
      *  $charsets = array(
      *      'UTF-8',
      *      'ISO-8859-1',
      *  );
-     *  $charset = HTTP2::negotiateCharset($charsets);
+     *  $charset = $http->negotiateCharset($charsets);
      * </code>
      *
      * @param array  $supported An array of supported charsets
      * @param string $default   The default charset to use if none is found.
      *
      * @return string  The negotiated language result or the supplied default.
-     * @static
      * @author Philippe Jausions <jausions@php.net>
-     * @access public
-     * @since  1.4.1
      */
-    function negotiateCharset($supported, $default = 'ISO-8859-1')
+    public function negotiateCharset($supported, $default = 'ISO-8859-1')
     {
         $supp = array();
         foreach ($supported as $charset) {
@@ -169,7 +166,7 @@ class HTTP2
         }
 
         if (isset($_SERVER['HTTP_ACCEPT_CHARSET'])) {
-            $match = HTTP2::_matchAccept($_SERVER['HTTP_ACCEPT_CHARSET'],
+            $match = $this->_matchAccept($_SERVER['HTTP_ACCEPT_CHARSET'],
                                         $supp);
             if (!is_null($match)) {
                 return $match;
@@ -188,25 +185,23 @@ class HTTP2
      *
      * <code>
      *  require_once 'HTTP2.php';
+     *  $http = new HTTP2();
      *  $contentType = array(
      *      'application/xhtml+xml',
      *      'application/xml',
      *      'text/html',
      *      'text/plain',
      *  );
-     *  $mime = HTTP2::negotiateContentType($contentType);
+     *  $mime = $http->negotiateContentType($contentType);
      * </code>
      *
      * @param array  $supported An associative array of supported MIME types.
      * @param string $default   The default type to use if none match.
      *
      * @return string  The negotiated MIME type result or the supplied default.
-     * @static
      * @author Philippe Jausions <jausions@php.net>
-     * @access public
-     * @since  1.4.1
      */
-    function negotiateMimeType($supported, $default)
+    public function negotiateMimeType($supported, $default)
     {
         $supp = array();
         foreach ($supported as $type) {
@@ -218,7 +213,7 @@ class HTTP2
         }
 
         if (isset($_SERVER['HTTP_ACCEPT'])) {
-            $accepts = HTTP2::_sortAccept($_SERVER['HTTP_ACCEPT']);
+            $accepts = $this->_sortAccept($_SERVER['HTTP_ACCEPT']);
 
             foreach ($accepts as $type => $q) {
                 if (substr($type, -2) != '/*') {
@@ -252,12 +247,10 @@ class HTTP2
      * @param array   $supported A list of supported values
      *
      * @return string|NULL  a matched option, or NULL if no match
-     * @access private
-     * @static
      */
-    function _matchAccept($header, $supported)
+    protected function _matchAccept($header, $supported)
     {
-        $matches = HTTP2::_sortAccept($header);
+        $matches = $this->sortAccept($header);
         foreach ($matches as $key => $q) {
             if (isset($supported[$key])) {
                 return $supported[$key];
@@ -276,10 +269,8 @@ class HTTP2
      * @param string  $header The HTTP "Accept" header to parse
      *
      * @return array  a sorted list of "accept" options
-     * @access private
-     * @static
      */
-    function _sortAccept($header)
+    protected function _sortAccept($header)
     {
         $matches = array();
         foreach (explode(',', $header) as $option) {
@@ -337,15 +328,15 @@ class HTTP2
     {
         $p = parse_url($url);
         if (!isset($p['scheme'])) {
-            $p = parse_url(HTTP2::absoluteURI($url));
+            $p = parse_url($this->absoluteURI($url));
         } elseif ($p['scheme'] != 'http') {
-            return HTTP2::raiseError('Unsupported protocol: '. $p['scheme']);
+            throw new InvalidArgumentException('Unsupported protocol: '. $p['scheme']);
         }
 
         $port = isset($p['port']) ? $p['port'] : 80;
 
         if (!$fp = @fsockopen($p['host'], $port, $eno, $estr, $timeout)) {
-            return HTTP2::raiseError("Connection error: $estr ($eno)");
+            throw new HTTP2_Exception("Connection error: $estr ($eno)");
         }
 
         $path  = !empty($p['path']) ? $p['path'] : '/';
@@ -389,8 +380,6 @@ class HTTP2
      *
      * @return boolean  Returns TRUE on succes (or exits) or FALSE if headers
      *                  have already been sent.
-     * @static
-     * @access public
      */
     function redirect($url, $exit = true, $rfc2616 = false)
     {
@@ -398,7 +387,7 @@ class HTTP2
             return false;
         }
 
-        $url = HTTP2::absoluteURI($url);
+        $url = $this->absoluteURI($url);
         header('Location: '. $url);
 
         if ($rfc2616 && isset($_SERVER['REQUEST_METHOD'])
@@ -440,10 +429,8 @@ location.replace("'.str_replace('"', '\\"', $url).'");
      *
      * @return string  The absolute URI.
      * @author Philippe Jausions <Philippe.Jausions@11abacus.com>
-     * @static
-     * @access public
      */
-    function absoluteURI($url = null, $protocol = null, $port = null)
+    public function absoluteURI($url = null, $protocol = null, $port = null)
     {
         // filter CR/LF
         $url = str_replace(array("\r", "\n"), ' ', $url);
@@ -525,24 +512,4 @@ location.replace("'.str_replace('"', '\\"', $url).'");
 
         return $server . $path . $url;
     }
-
-    /**
-     * Raise Error
-     *
-     * Lazy raising of PEAR_Errors.
-     *
-     * @param mixed   $error Error
-     * @param integer $code  Error code
-     *
-     * @return object  PEAR_Error
-     * @static
-     * @access protected
-     */
-    function raiseError($error = null, $code = null)
-    {
-        include_once 'PEAR.php';
-        return PEAR::raiseError($error, $code);
-    }
 }
-
-?>

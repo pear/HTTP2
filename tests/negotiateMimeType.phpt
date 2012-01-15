@@ -85,8 +85,10 @@ $sets = array(
     9 => array(
     ),
 );
+
+$http = new HTTP2();
 foreach ($sets as $i => $supported) {
-    echo $i.' => '.HTTP2::negotiateMimeType($supported, 'application/octet-stream')
+    echo $i.' => '.$http->negotiateMimeType($supported, 'application/octet-stream')
          ."\n";
 }
 

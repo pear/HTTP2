@@ -54,8 +54,10 @@ $sets = array(
     5 => array(
     ),
 );
+
+$http = new HTTP2();
 foreach ($sets as $i => $supported) {
-    echo $i.' => '.HTTP2::negotiateCharset($supported, 'us-ascii')
+    echo $i.' => '. $http->negotiateCharset($supported, 'us-ascii')
          ."\n";
 }
 

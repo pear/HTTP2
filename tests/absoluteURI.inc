@@ -34,11 +34,12 @@ $tests = array(
     array('page.html', 'https', 8888), // Force HTTPS / port 8888
     );
 
+$http = new HTTP2();
 foreach ($tests as $test) {
     list($page, $protocol, $port) = $test;
 
     echo sprintf('%-20s', implode('|', $test)).' => '
-         .HTTP2::absoluteURI($page, $protocol, $port, HTTP2_RELATIVETOSCRIPT)
+         .$http->absoluteURI($page, $protocol, $port, HTTP2_RELATIVETOSCRIPT)
          ."\n";
 }
 
