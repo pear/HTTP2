@@ -39,7 +39,6 @@ require_once 'HTTP2/Exception.php';
  * @author   Philippe Jausions <jausions@php.net>
  * @author   Michael Wallner <mike@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @abstract
  * @version  Release: $Revision$
  * @link     http://pear.php.net/package/HTTP2
  */
