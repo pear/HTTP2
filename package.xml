@@ -36,23 +36,26 @@ Make API non static
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="/" md5sum="a34a19790a8831b38419313c9c10dfda" name="/HTTP2/Exception.php" role="php" />
-   <file baseinstalldir="/" md5sum="6b330e9bba20b1dcef8377079ead6081" name="/tests/absoluteURI.inc" role="data" />
-   <file baseinstalldir="/" md5sum="838e1ec4a549a105bda7cb3708e17bca" name="/tests/negotiateCharset.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="7bed1d59960f30ad959abc59b62a6787" name="/tests/negotiateCharset2.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="a8fed2e334ab0eff115c2d3a047b4893" name="/tests/negotiateLanguage.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="93bb4a04a190cb7815af8e52f83cf91b" name="/tests/negotiateMimeType.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="dfe5128e00b9c5b91afa186bc2989757" name="/tests/test1a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="df84a961cad11792302ea7facb70eff0" name="/tests/test2a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="96b47dc38996a5970b016e5b555eed6e" name="/tests/test3a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="cb88ce1aae8e8b662acb27cfb2b6f3b2" name="/tests/test4a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="9776763b4f9d8e4f9b06b4bf5db46dd2" name="/tests/test5a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="2a46d2f6421ae83304a47cb8893dbda5" name="/tests/test6a.phpt" role="data" />
-   <file baseinstalldir="/" md5sum="4d1a5edebb6d0278d8a7eb6450bbc3ff" name="build.xml" role="data" />
-   <file baseinstalldir="/" md5sum="b4c05f0e7cd733ecf1b5d4c0650bd3c5" name="HTTP2.php" role="php" />
-   <file baseinstalldir="/" md5sum="cd6a3937d363e0a0ca538cadfde7b9bf" name="LICENSE" role="data" />
-   <file baseinstalldir="/" md5sum="a493bce55f6aa1476d12fa0c707a95e2" name="phpunit.xml" role="data" />
-   <file baseinstalldir="/" md5sum="f006ef26c9f7d6dd88cabcb18a774b86" name="README" role="data" />
+   <file name="HTTP2.php" role="php" />
+   <file name="HTTP2/Exception.php" role="php" />
+
+   <file name="phpunit.xml" role="test" />
+   <file name="tests/absoluteURI.inc" role="test" />
+   <file name="tests/negotiateCharset.phpt" role="test" />
+   <file name="tests/negotiateCharset2.phpt" role="test" />
+   <file name="tests/negotiateLanguage.phpt" role="test" />
+   <file name="tests/negotiateMimeType.phpt" role="test" />
+   <file name="tests/test1a.phpt" role="test" />
+   <file name="tests/test2a.phpt" role="test" />
+   <file name="tests/test3a.phpt" role="test" />
+   <file name="tests/test4a.phpt" role="test" />
+   <file name="tests/test5a.phpt" role="test" />
+   <file name="tests/test6a.phpt" role="test" />
+
+   <file name="build.xml" role="data" />
+
+   <file name="LICENSE" role="doc" />
+   <file name="README" role="doc" />
   </dir>
  </contents>
  <dependencies>
