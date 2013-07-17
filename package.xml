@@ -16,28 +16,32 @@ language negotiation or HTTP redirection.</description>
   <name>Philippe Jausions</name>
   <user>jausions</user>
   <email>jausions@php.net</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
- <date>2012-01-16</date>
- <time>08:55:19</time>
+ <date>2013-07-17</date>
+ <time>14:55:23</time>
  <version>
-  <release>0.1.0</release>
-  <api>0.1.0</api>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-Fork from HTTP
-PHP5-ify
-Make API non static
+  - Fix docblocks and coding style
+  - Mark stable
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
-   <file name="HTTP2.php" role="php" />
-   <file name="HTTP2/Exception.php" role="php" />
+   <file name="HTTP2.php" role="php">
+    <tasks:replace type="package-info" from="@version@" to="version" />
+   </file>
+
+   <file name="HTTP2/Exception.php" role="php">
+    <tasks:replace type="package-info" from="@version@" to="version" />
+   </file>
 
    <file name="phpunit.xml" role="test" />
    <file name="tests/absoluteURI.inc" role="test" />
@@ -77,6 +81,24 @@ Make API non static
  </dependencies>
  <phprelease />
  <changelog>
+
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2013-07-17</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+    - Fix docblocks and coding style
+    - Mark stable
+   </notes>
+  </release>
+
   <release>
    <version>
     <release>0.1.0</release>
@@ -94,5 +116,6 @@ PHP5-ify
 Make API non static
    </notes>
   </release>
+
  </changelog>
 </package>
