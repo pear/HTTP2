@@ -1,9 +1,8 @@
 <?php
-
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * HTTP2
+ * Part of HTTP2
  *
  * PHP version 5
  *
@@ -17,7 +16,6 @@
  * @author    Michael Wallner <mike@php.net>
  * @copyright 2002-2008 The Authors
  * @license   http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version   CVS: $Id$
  * @link      http://pear.php.net/package/HTTP2
  */
 
@@ -39,7 +37,7 @@ require_once 'HTTP2/Exception.php';
  * @author   Philippe Jausions <jausions@php.net>
  * @author   Michael Wallner <mike@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php  New BSD License
- * @version  Release: $Revision$
+ * @version  Release: @version@
  * @link     http://pear.php.net/package/HTTP2
  */
 class HTTP2
@@ -51,7 +49,8 @@ class HTTP2
      *
      * @param mixed $time unix timestamp or date (default = current time)
      *
-     * @return mixed  GMT date string, or false for an invalid $time parameter
+     * @return string|boolean GMT date string, or FALSE for an invalid
+     *                        $time parameter
      */
     public function date($time = null)
     {
@@ -97,7 +96,7 @@ class HTTP2
      *                          whose values must evaluate to true.
      * @param string $default   The default language to use if none is found.
      *
-     * @return string  The negotiated language result or the supplied default.
+     * @return string The negotiated language result or the supplied default.
      */
     public function negotiateLanguage($supported, $default = 'en-US')
     {
@@ -152,7 +151,7 @@ class HTTP2
      * @param array  $supported An array of supported charsets
      * @param string $default   The default charset to use if none is found.
      *
-     * @return string  The negotiated language result or the supplied default.
+     * @return string The negotiated language result or the supplied default.
      * @author Philippe Jausions <jausions@php.net>
      */
     public function negotiateCharset($supported, $default = 'ISO-8859-1')
@@ -196,13 +195,13 @@ class HTTP2
      *      'text/html',
      *      'text/plain',
      *  );
-     *  $mime = $http->negotiateContentType($contentType);
+     *  $mime = $http->negotiateMimeType($contentType);
      * </code>
      *
      * @param array  $supported An associative array of supported MIME types.
      * @param string $default   The default type to use if none match.
      *
-     * @return string  The negotiated MIME type result or the supplied default.
+     * @return string The negotiated MIME type result or the supplied default.
      * @author Philippe Jausions <jausions@php.net>
      */
     public function negotiateMimeType($supported, $default)
@@ -250,7 +249,7 @@ class HTTP2
      * @param string $header    The HTTP "Accept" header to parse
      * @param array  $supported A list of supported values
      *
-     * @return string|NULL  a matched option, or NULL if no match
+     * @return string|NULL a matched option, or NULL if no match
      */
     protected function matchAccept($header, $supported)
     {
@@ -272,7 +271,7 @@ class HTTP2
      *
      * @param string $header The HTTP "Accept" header to parse
      *
-     * @return array  a sorted list of "accept" options
+     * @return array Sorted list of "accept" options
      */
     protected function sortAccept($header)
     {
@@ -321,14 +320,15 @@ class HTTP2
      * @param string  $url     A valid URL, e.g.: http://pear.php.net/credits.php
      * @param integer $timeout Timeout in seconds (default = 10)
      *
-     * @return array  Returns associative array of response headers on success
-     *                or PEAR error on failure.
-     * @static
-     * @access public
+     * @return array Returns associative array of response headers on success
+     *
+     * @throws HTTP2_Exception          When connecting fails
+     * @throws InvalidArgumentException When the protocol is not uspported
+     *
      * @see HTTP_Client::head()
      * @see HTTP_Request
      */
-    function head($url, $timeout = 10)
+    public function head($url, $timeout = 10)
     {
         $p = parse_url($url);
         if (!isset($p['scheme'])) {
@@ -384,8 +384,8 @@ class HTTP2
      *                        redirecting to (Redirecting to
      *                        <a href="...">...</a>.)
      *
-     * @return boolean  Returns TRUE on succes (or exits) or FALSE if headers
-     *                  have already been sent.
+     * @return boolean Returns TRUE on succes (or exits) or FALSE if headers
+     *                 have already been sent.
      */
     function redirect($url, $exit = true, $rfc2616 = false)
     {
@@ -434,7 +434,7 @@ location.replace("'.str_replace('"', '\\"', $url).'");
      * @param string  $protocol Protocol to use when redirecting URIs.
      * @param integer $port     A new port number.
      *
-     * @return string  The absolute URI.
+     * @return string The absolute URI.
      * @author Philippe Jausions <Philippe.Jausions@11abacus.com>
      */
     public function absoluteURI($url = null, $protocol = null, $port = null)
@@ -525,3 +525,4 @@ location.replace("'.str_replace('"', '\\"', $url).'");
         return $server . $path . $url;
     }
 }
+?>
