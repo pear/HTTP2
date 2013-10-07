@@ -524,5 +524,138 @@ location.replace("'.str_replace('"', '\\"', $url).'");
 
         return $server . $path . $url;
     }
+
+    /**
+     * Parses a HTTP "Link" header value as specified by RFC 5988.
+     *
+     * When errors occur during parsing, all information collected to that
+     * point will be returned used and the rest of the line skipped.
+     *
+     * @param string|array $lines HTTP "Link:" header value (without "Link:"),
+     *                            or array of such strings
+     *
+     * @return array Array of parsed links
+     *               (one single line may contain multiple links)
+     *               Only params existing in the link are in the array.
+     *               URI is available in key "_uri".
+     *
+     * @link http://tools.ietf.org/html/rfc5988
+     */
+    public function parseLinks($lines)
+    {
+        $lines = (array) $lines;
+        $extracted = array();
+
+        foreach ($lines as $line) {
+            $state = 'uri';
+            $pos = 0;
+            $len = strlen($line);
+            while ($pos < $len - 1) {
+                $link = array();
+                $pos = $len - strlen(ltrim(substr($line, $pos)));
+                if ($line{$pos} == ',') {
+                    ++$pos;
+                    continue;
+                } else if ($line{$pos} != '<') {
+                    break;
+                }
+                $end = strpos($line, '>', $pos + 1);
+                if ($end === false) {
+                    break;
+                }
+                $link['_uri'] = substr($line, $pos + 1, $end - $pos - 1);
+                $pos = $end + 1;
+
+                while ($pos < $len - 1) {
+                    if ($line{$pos} == ',') {
+                        $extracted[] = $link;
+                        $link = array();
+                        ++$pos;
+                        continue;
+                    } else if ($line{$pos} != ';') {
+                        break;
+                    }
+
+                    ++$pos;
+                    $end = strpos($line, '=', $pos + 1);
+                    if ($end === false) {
+                        break;
+                    }
+                    $pname = trim(substr($line, $pos, $end - $pos));
+                    $pos = $end + 1;
+                    
+                    $rest = trim(substr($line, $pos));
+                    if ($rest{0} == '"') {
+                        $pos = strpos($line, '"', $pos) + 1;
+                        $end = strpos($line, '"', $pos + 1);
+                        $pval = substr($line, $pos, $end - $pos);
+                        $pos = $end + 1;
+                    } else {
+                        $end1 = strpos($line, ';', $pos + 1);
+                        $end2 = strpos($line, ',', $pos + 1);
+                        if ($end1 === false && $end2 === false) {
+                            $end = $len;
+                        } else if ($end1 === false) {
+                            $end = $end2;
+                        } else if ($end2 === false) {
+                            $end = $end1;
+                        } else {
+                            $end = $end1 < $end2 ? $end1 : $end2;
+                        }
+                        $pval = trim(substr($line, $pos, $end - $pos));
+                        $pos = $end;
+                    }
+                    if ($pname == 'title*') {
+                        $parts = explode("'", $pval, 3);
+                        if (count($parts) != 3) {
+                            continue;
+                        }
+                        list($charset, $lang, $val) = $parts;
+                        $link[$pname][$lang] = $this->convertCharset(
+                            $charset, 'utf-8', urldecode($val)
+                        );
+                    } else if ($pname == 'rel' || $pname == 'rev') {
+                        if (!isset($link[$pname])) {
+                            $link[$pname] = array();
+                        }
+                        $link[$pname] = array_merge(
+                            $link[$pname],
+                            array_map('trim', explode(' ', $pval))
+                        );
+                    } else if (!isset($link[$pname])) {
+                        $link[$pname] = $pval;
+                    }
+                    if ($line{$end} == ',') {
+                        break;
+                    }
+                }
+                if (count($link) > 0) {
+                    $extracted[] = $link;
+                }
+            }
+        }
+
+        return $extracted;
+    }
+
+    /**
+     * Convert the given string from one into another charset.
+     * Uses mb_convert_encoding or iconv if available.
+     *
+     * @param string $from Source charset the string is in
+     * @param string $to   Target character set
+     * @param string $str  String to convert
+     *
+     * @return string converted string
+     */
+    protected function convertCharset($from, $to, $str)
+    {
+        if (function_exists('mb_convert_encoding')) {
+            return mb_convert_encoding($str, $to, $from);
+        } else if (function_exists('iconv')) {
+            return iconv($from, $to, $str);
+        }
+        return $str;
+    }
 }
 ?>
