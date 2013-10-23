@@ -23,10 +23,10 @@ language negotiation or HTTP redirection.</description>
   <email>jausions@php.net</email>
   <active>no</active>
  </lead>
- <date>2013-10-07</date>
- <time>21:50:00</time>
+ <date>2013-10-23</date>
+ <time>17:40:00</time>
  <version>
-  <release>1.1.0</release>
+  <release>1.1.1</release>
   <api>1.1.0</api>
  </version>
  <stability>
@@ -35,7 +35,7 @@ language negotiation or HTTP redirection.</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-  - Support RFC 5988 (Web Linking) via new parseLinks() method
+  - Fix parsing arguments values without quotes
  </notes>
 
  <contents>
@@ -64,6 +64,7 @@ language negotiation or HTTP redirection.</description>
    <file name="tests/parseLinks_array.phpt" role="test" />
    <file name="tests/parseLinks_multiple.phpt" role="test" />
    <file name="tests/parseLinks_real.phpt" role="test" />
+   <file name="tests/parseLinks_rel-no-quote.phpt" role="test" />
    <file name="tests/parseLinks_rfc5988-examples-1.phpt" role="test" />
    <file name="tests/parseLinks_rfc5988-examples-2.phpt" role="test" />
    <file name="tests/parseLinks_rfc5988-examples-3.phpt" role="test" />
@@ -95,6 +96,22 @@ language negotiation or HTTP redirection.</description>
  </dependencies>
  <phprelease />
  <changelog>
+
+  <release>
+   <version>
+    <release>1.1.1</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-10-23</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+    - Fix parsing arguments values without quotes
+   </notes>
+  </release>
 
   <release>
    <version>
