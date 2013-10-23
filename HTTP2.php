@@ -625,7 +625,7 @@ location.replace("'.str_replace('"', '\\"', $url).'");
                     } else if (!isset($link[$pname])) {
                         $link[$pname] = $pval;
                     }
-                    if ($line{$end} == ',') {
+                    if ($end >= $len || $line{$end} == ',') {
                         break;
                     }
                 }
