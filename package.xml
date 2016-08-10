@@ -23,10 +23,10 @@ language negotiation or HTTP redirection.</description>
   <email>jausions@php.net</email>
   <active>no</active>
  </lead>
- <date>2013-10-23</date>
- <time>17:40:00</time>
+ <date>2016-08-10</date>
+ <time>21:10:00</time>
  <version>
-  <release>1.1.1</release>
+  <release>1.1.2</release>
   <api>1.1.0</api>
  </version>
  <stability>
@@ -35,7 +35,8 @@ language negotiation or HTTP redirection.</description>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
  <notes>
-  - Fix parsing arguments values without quotes
+  - Fix coding style
+  - Add composer.json
  </notes>
 
  <contents>
@@ -73,14 +74,14 @@ language negotiation or HTTP redirection.</description>
    <file name="build.xml" role="data" />
 
    <file name="LICENSE" role="doc" />
-   <file name="README" role="doc" />
+   <file name="README.rst" role="doc" />
   </dir>
  </contents>
 
  <dependencies>
   <required>
    <php>
-    <min>5.0.0</min>
+    <min>5.4.0</min>
    </php>
    <pearinstaller>
     <min>1.7.1</min>
@@ -95,7 +96,25 @@ language negotiation or HTTP redirection.</description>
   </required>
  </dependencies>
  <phprelease />
+
  <changelog>
+
+  <release>
+   <version>
+    <release>1.1.2</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2016-08-10</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
+   <notes>
+    - Fix coding style
+    - Add composer.json
+   </notes>
+  </release>
 
   <release>
    <version>
