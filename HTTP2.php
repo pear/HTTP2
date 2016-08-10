@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Part of HTTP2
  *
@@ -19,6 +17,9 @@
  * @link      http://pear.php.net/package/HTTP2
  */
 
+/**
+ * Load exception class
+ */
 require_once 'HTTP2/Exception.php';
 
 /**
