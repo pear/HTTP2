@@ -3,7 +3,7 @@ sudo: false
 php:
   - 7.4
 install:
-  - pear upgrade pear-1.10.1
+  - pear upgrade pear
   - pear install php_codesniffer
   - phpenv rehash
 script:
