@@ -1,6 +1,5 @@
 --TEST--
 negotiateCharset() without any default
---GET--
 --ENV--
 HTTP_HOST=example.org
 SERVER_NAME=example.org

@@ -1,12 +1,10 @@
 language: php
-sudo: false
 php:
   - 7.4
+  - 8.0
+  - 8.1
+  - 8.2
 install:
-  - pear upgrade pear
-  - pear install php_codesniffer
-  - phpenv rehash
+  - composer install
 script:
-  - phpcs HTTP2.php HTTP2/
-  - pear run-tests -d tests/
-
+  - ./vendor/bin/phpunit

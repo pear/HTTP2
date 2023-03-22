@@ -26,6 +26,6 @@
         }
     },
     "require-dev": {
-        "pear/pear-core": "*"
+        "phpunit/phpunit": "^9"
     }
 }

@@ -435,6 +435,9 @@ location.replace("'.str_replace('"', '\\"', $url).'");
      */
     public function absoluteURI($url = null, $protocol = null, $port = null)
     {
+        if ($url === null) {
+            $url = '';
+        }
         // filter CR/LF
         $url = str_replace(array("\r", "\n"), ' ', $url);
 

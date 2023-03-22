@@ -1,6 +1,5 @@
 --TEST--
 absoluteURI() URL: http://example.org/subdir/test.php/extra_pathinfo?abc=123
---GET--
 --ENV--
 HTTP_HOST=example.org
 SERVER_NAME=example.org
@@ -25,7 +24,7 @@ SCRIPT_NAME=/subdir/test.php
  * @license  http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @link     http://pear.php.net/package/HTTP2
  */
-require 'absoluteURI.inc';
+require __DIR__ . '/absoluteURI.inc';
 
 ?>
 --EXPECT--

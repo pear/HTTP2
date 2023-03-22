@@ -1,5 +1,6 @@
 /build/
 /releases/
+/.phpunit.result.cache
 
 # composer related
 composer.lock
