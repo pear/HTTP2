@@ -25,9 +25,6 @@
             "HTTP2": "./"
         }
     },
-    "include-path": [
-        "./"
-    ],
     "require-dev": {
         "pear/pear-core": "*"
     }

@@ -18,11 +18,6 @@
  */
 
 /**
- * Load exception class
- */
-require_once 'HTTP2/Exception.php';
-
-/**
  * Miscellaneous HTTP Utilities
  *
  * PEAR::HTTP2 provides shorthand methods for generating HTTP dates,
