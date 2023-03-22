@@ -34,7 +34,6 @@ Quality factors in the ``Accept-Language:`` header are supported, e.g.::
 Code::
 
     <?php
-    require_once 'HTTP2.php';
     $http = new HTTP2();
     $langs = array(
         'en'    => 'locales/en',
@@ -54,7 +53,6 @@ Charset negotiation
 ::
 
     <?php
-    require_once 'HTTP2.php';
     $http = new HTTP2();
     $charsets = array(
         'UTF-8',
@@ -69,7 +67,6 @@ MIME type negotiation
 ::
 
     <?php
-    require_once 'HTTP2.php';
     $http = new HTTP2();
     $contentType = array(
         'application/xhtml+xml',
