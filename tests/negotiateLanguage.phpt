@@ -32,7 +32,7 @@ require_once 'HTTP2.php';
 // 4. es
 // 5. en
 
-$sets = array( 
+$sets = array(
     1 => array(
         'es-ES' => 'x',
         'fr' => true,

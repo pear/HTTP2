@@ -582,7 +582,7 @@ location.replace("'.str_replace('"', '\\"', $url).'");
                     }
                     $pname = trim(substr($line, $pos, $end - $pos));
                     $pos = $end + 1;
-                    
+
                     $rest = trim(substr($line, $pos));
                     if ($rest[0] == '"') {
                         $pos = strpos($line, '"', $pos) + 1;

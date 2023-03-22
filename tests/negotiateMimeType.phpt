@@ -8,7 +8,7 @@ SERVER_PORT=80
 HTTPS=off
 REQUEST_URI=/subdir/test.php
 SCRIPT_NAME=/subdir/test.php
-HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,text/*;q=0.7,*/*,image/gif; q=0.8, image/jpeg; q=0.6, image/* 
+HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,text/*;q=0.7,*/*,image/gif; q=0.8, image/jpeg; q=0.6, image/*
 --FILE--
 <?php
 /**
@@ -35,9 +35,9 @@ require_once  'HTTP2.php';
 // 7. image/* (any image type)
 // 8. */* (any type)
 
-$sets = array( 
+$sets = array(
     1 => array(
-        'image/gif', 
+        'image/gif',
         'image/png',
         'application/xhtml+xml',
         'application/xml',
@@ -46,7 +46,7 @@ $sets = array(
         'text/plain',
     ),
     2 => array(
-        'image/gif', 
+        'image/gif',
         'image/png',
         'application/xhtml+xml',
         'application/xml',
@@ -54,14 +54,14 @@ $sets = array(
         'text/plain',
     ),
     3 => array(
-        'image/gif', 
+        'image/gif',
         'image/png',
         'application/xml',
         'image/jpeg',
         'text/plain',
     ),
     4 => array(
-        'image/gif', 
+        'image/gif',
         'image/png',
         'image/jpeg',
         'text/plain',

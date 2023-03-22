@@ -8,7 +8,7 @@ SERVER_PORT=80
 HTTPS=off
 REQUEST_URI=/subdir/test.php
 SCRIPT_NAME=/subdir/test.php
-HTTP_ACCEPT_CHARSET=ISO-8859-1, Big5;q=0.6,utf-8;q=0.7, *;q=0.5 
+HTTP_ACCEPT_CHARSET=ISO-8859-1, Big5;q=0.6,utf-8;q=0.7, *;q=0.5
 --FILE--
 <?php
 /**
@@ -31,7 +31,7 @@ require_once  'HTTP2.php';
 // 3. Big5 (Traditional Chinese)
 // 3. * (any other)
 
-$sets = array( 
+$sets = array(
     1 => array(
         'utf-8',
         'big5',

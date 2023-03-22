@@ -31,7 +31,7 @@ require_once  'HTTP2.php';
 // 3. Big5 (Traditional Chinese)
 // 3. * (any other)
 
-$sets = array( 
+$sets = array(
     1 => array(
         'utf-8',
         'big5',
