@@ -17,15 +17,6 @@ Features
 
 Installation
 ============
-
-PEAR
-----
-::
-
-    $ pear install HTTP2
-
-Composer
---------
 ::
 
     $ composer require pear/http2
